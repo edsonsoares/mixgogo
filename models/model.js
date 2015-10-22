@@ -4,17 +4,40 @@ var Schema = mongoose.Schema;
 // See http://mongoosejs.com/docs/schematypes.html
 
 var animalSchema = new Schema({
-	name: String,
+	//name: String,
 	// name: {type: String, required: true}, // this version requires this field to exist
 	// name: {type: String, unique: true}, // this version requires this field to be unique in the db
-	age: Number,
-	tags: [String],
-	description: {
-		weight: Number,
-		color: String
+	// age: Number,
+	// tags: [String],
+	// description: {
+	// 	weight: Number,
+	// 	color: String
+	// },
+	// url: String,
+	// dateAdded : { type: Date, default: Date.now },
+
+
+	title: String,
+	lineup: {
+		artist: [String],
+		soundcloudUrl: [String]
 	},
-	url: String,
+	description: String,
+	isfree: Boolean,
+	price: String,
+	buyUrl: String,
+	artcover: String,
 	dateAdded : { type: Date, default: Date.now },
+
+
+
+	// startTime: String,
+	// endTime: Number,
+	// address: String,
+	// zip: Number,
+	// city: String
+
+
 })
 
 // export 'Animal' model so we can interact with it in other files

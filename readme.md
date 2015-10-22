@@ -32,7 +32,7 @@ cd path/to/this/code/directory
 	git commit -am "init commit"
 
 7) Create the Heroku app
-
+ 
 	heroku create
 
 NOTE: if it is your very **FIRST** time setting up a Heroku app, you will need to upload a public key to Heroku. See <http://stackoverflow.com/a/6059231>. As explained in that StackOverlow link, if you don't yet have a public key, you'll be prompted to add one.

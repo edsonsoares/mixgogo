@@ -39,25 +39,51 @@ router.post('/api/create', function(req, res){
     console.log(req.body);
 
     // pull out the information from the req.body
-    var name = req.body.name;
-    var age = req.body.age;
-    var tags = req.body.tags.split(","); // split string into array
-    var weight = req.body.weight;
-    var color = req.body.color;
-    var url = req.body.url;
+    // var name = req.body.name;
+    // var age = req.body.age;
+    // var tags = req.body.tags.split(","); // split string into array
+    // var weight = req.body.weight;
+    // var color = req.body.color;
+    // var url = req.body.url;
+
+    // pull out the information from the req.body
+
+    var title = req.body.title;
+    var artist = req.body.artist.split(",");
+    var soundcloudUrl = req.body.soundcloudUrl.split(",");
+    var description = req.body.description;
+    var isfree = req.body.isfree;
+    var price = req.body.price;
+    var buyUrl = req.body.buyUrl;
+    var artcover = req.body.artcover;
+
 
     // hold all this data in an object
     // this object should be structured the same way as your db model
     var animalObj = {
-      name: name,
-      age: age,
-      tags: tags,
-      description: {
-        weight: weight,
-        color: color
+      // name: name,
+      // age: age,
+      // tags: tags,
+      // description: {
+      //   weight: weight,
+      //   color: color
+      // },
+      // url: url
+
+      title: title,
+      lineup: {
+        artist: artist,
+        soundcloudUrl: soundcloudUrl
       },
-      url: url
+      description: description,
+      isfree: isfree,
+      price: price,
+      buyUrl: buyUrl,
+      artcover: artcover
     };
+
+
+
 
     // create a new animal model instance, passing in the object
     var animal = new Animal(animalObj);
