@@ -11,8 +11,9 @@ var setSchema = new Schema({
 		soundcloudUrl: [String]
 	},
 	description: String,
-	isfree: Boolean,
-	price: String,
+	isfree: {type: Boolean, default: false},
+	minPrice: String,
+	maxPrice: String,
 	buyUrl: String,
 	artcover: String,
 	dateAdded : { type: Date, default: Date.now },
@@ -23,6 +24,8 @@ var setSchema = new Schema({
 	address: String,
 	zip: Number,
 	city: String
+
+
 
 })
 
