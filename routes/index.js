@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
   //res.json(jsonData)
 
   // respond with html
-  res.render('upcoming.html')
+  res.render('subscribe.html')
 
 });
 
