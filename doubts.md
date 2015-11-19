@@ -1,3 +1,4 @@
-1) Whats the difference between res with rendering a page and in oder router res with a json, instead of res with a render with the data in the parentheses?
 
+
+So I have two objects when creating a new set? One only for the image and other for the other params of the Set Object? Do I need to put the artcover object inside the Set object?
 

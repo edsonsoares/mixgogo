@@ -5,6 +5,35 @@ var mongoose = require('mongoose');
 // our db model
 var Set = require("../models/model.js");
 
+// S3 File dependencies
+var AWS = require('aws-sdk');
+var awsBucketName = process.env.AWS_BUCKET_NAME;
+var s3Path = process.env.AWS_S3_PATH; // TODO - we shouldn't hard code the path, but get a temp URL dynamically using aws-sdk's getObject
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+});
+var s3 = new AWS.S3();
+
+// file processing dependencies
+var fs = require('fs');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
+
+
+
+// /** ____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
 /**
  * GET '/'
  * Default home route. Just relays a success message back.
@@ -22,7 +51,7 @@ router.get('/', function(req, res) {
   //res.json(jsonData)
 
   // respond with html
-  res.render('subscribe.html')
+  res.render('subscribe.html', {layout: null})
 
 });
 
@@ -32,7 +61,6 @@ router.get('/upcoming', function(req,res){
 
 
 res.render('upcoming.html')
-
 
 
 })  
@@ -82,9 +110,7 @@ router.get('/api/get', function(req, res){
 
 
 
-
-
-
+// /** ____________________________________________________________________________
 
 
 
@@ -175,7 +201,7 @@ router.get('/api/add', function(req,res){
 
   console.log('got into the add set page');
 
-  res.render('add.html')
+  res.render('add.html', {layout:"noplayer-layout"})
 
 
  });
@@ -213,10 +239,16 @@ router.get('/edit/:id', function(req,res){
 
     var viewData = {
       status: "OK",
-      set: data
+      set: data,      
+      layout:"noplayer-layout" // add layout as a field in viewData
     }
 
-    return res.render('edit.html',viewData);
+
+
+
+    return res.render('edit.html', viewData)
+
+    //return res.render('edit.html', {layout:"noplayer-layout"}, viewData)
   })
 
 })
@@ -239,9 +271,11 @@ router.get('/edit/:id', function(req,res){
 //  * @return {Object} JSON
 //  */
 
-router.post('/api/create', function(req, res){
+router.post('/api/create', multipartMiddleware, function(req, res){
 
-    console.log(req.body);
+  console.log('the incoming data >> ' + JSON.stringify(req.body));
+  console.log('the incoming image file >> ' + JSON.stringify(req.files.artcover));
+
 
     // pull out the information from the req.body
     var title = req.body.title;
@@ -252,7 +286,7 @@ router.post('/api/create', function(req, res){
     var minPrice = req.body.minPrice;
     var maxPrice = req.body.maxPrice;
     var buyUrl = req.body.buyUrl;
-    var artcover = req.body.artcover;
+    
 
     var dateEvent = req.body.dateEvent;
     var startTime = req.body.startTime;
@@ -262,8 +296,8 @@ router.post('/api/create', function(req, res){
     var city = req.body.city;
 
 
-   
 
+   
     // hold all this data in an object
     // this object should be structured the same way as your db model
     var setObj = {
@@ -278,9 +312,6 @@ router.post('/api/create', function(req, res){
       minPrice: minPrice,
       maxPrice: maxPrice,
       buyUrl: buyUrl,
-      artcover: artcover,
-
-
       dateEvent: dateEvent,
       startTime: startTime,
       endTime: endTime,
@@ -291,42 +322,104 @@ router.post('/api/create', function(req, res){
 
 
 
- 
-    // create a new set model instance, passing in the object
-    var set = new Set(setObj);
 
-    // now, save that set instance to the database
-    // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
-    set.save(function(err,data){
-      // if err saving, respond back with error
-      if (err){
-        var error = {status:'ERROR', message: 'Error saving set'};
-        return res.json(error);
+
+// NOW, we need to deal with the image
+  // the contents of the image will come in req.files (not req.body)
+  var filename = req.files.artcover.name; // actual filename of file
+  var path = req.files.artcover.path; // will be put into a temp directory
+  var mimeType = req.files.artcover.type; // image/jpeg or actual mime type
+ // create a cleaned file name to store in S3
+  // see cleanFileName function below
+  var cleanedFileName = cleanFileName(filename);
+
+// We first need to open and read the uploaded image into a buffer
+  fs.readFile(path, function(err, file_buffer){
+
+    // reference to the Amazon S3 Bucket
+    var s3bucket = new AWS.S3({params: {Bucket: 'mixgogo-img-uploads'}});
+
+    // Set the bucket object properties
+    // Key == filename
+    // Body == contents of file
+    // ACL == Should it be public? Private?
+    // ContentType == MimeType of file ie. image/jpeg.
+    var params = {
+      Key: cleanedFileName,
+      Body: file_buffer,
+      ACL: 'public-read',
+      ContentType: mimeType
+    };
+
+    // Put the above Object in the Bucket
+    s3bucket.putObject(params, function(err, data) {
+      if (err) {
+        console.log(err)
+        return;
       } else {
-          console.log('saved a new set!');
-          console.log(data);
+        console.log("Successfully uploaded data to s3 bucket");
 
-          // now return the json data of the new set
-          var jsonData = {
-            status: 'OK',
-            pageTitle: set.title,
-            set: data
-        }
+        // now that we have the image
+        // we can add the s3 url our person object from above
+        setObj['artcover'] = s3Path + cleanedFileName;
 
+        // create a new set model instance, passing in the object
+        var set = new Set(setObj);
 
-        //respond with rendering a page
-        res.render('event.html', jsonData)
+        // now, save that set instance to the database
+        // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
+        set.save(function(err,data){
+          // if err saving, respond back with error
+          if (err){
+            var error = {status:'ERROR', message: 'Error saving set'};
+            return res.json(error);
+          } else {
+              console.log('saved a new set!');
+              console.log(data);
 
-        //respond by redirecting to anything
-        //res.redirect('blablabla')
+              // now return the json data of the new set
+              var jsonData = {
+                status: 'OK',
+                pageTitle: set.title,
+                set: data
+              }
+          }
 
-        //respond with JSON
-        //return res.json(jsonData);
+              //respond with rendering a page
+              res.render('event.html', jsonData);
+
+        })  //end of set save
+
       }
 
-      
-    })  
-});
+    }); //end of put object
+
+  }); //end of read file
+
+}) //end of router
+
+
+
+
+function cleanFileName (filename) {
+
+    // cleans and generates new filename for example userID=abc123 and filename="My Pet Dog.jpg"
+    // will return "abc123_my_pet_dog.jpg"
+    var fileParts = filename.split(".");
+
+    //get the file extension
+    var fileExtension = fileParts[fileParts.length-1]; //get last part of file
+
+    //add time string to make filename a little more random
+    d = new Date();
+    timeStr = d.getTime();
+
+    //name without extension
+    newFileName = fileParts[0];
+
+    return newFilename = timeStr + "_" + fileParts[0].toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_') + "." + fileExtension;
+
+}
 
 
 

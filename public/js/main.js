@@ -8,7 +8,7 @@ var empty = true;
 function init() {
 	//getSoundcloud();
 	pullData();
-  	renderEvent();
+  	
   	
 }
 
@@ -36,14 +36,12 @@ function pullData(){
 			for(var i=0; i< sets.length; i++){
 				
 				sets[currentSet].index = currentSet;
-	           	console.log("Esse é o index");
-	           	console.log(i);
-	           	//postPlayer(sets[currentSet]); 
+	           	//console.log("Esse é o index");
+	           	//console.log(i);
 	           	renderEvents(sets[currentSet]);
 	           	currentSet++;
 
 	        }
-
 
 				// var htmlToAdd = 
 				// '<div class="col-md-4">'+
@@ -67,7 +65,8 @@ function pullData(){
 	});
 
 	soundcloudSDK();
-	
+	renderEvent();
+
 }
 
 
@@ -79,22 +78,31 @@ function pullData(){
 
 function renderEvents(currentSet){
 
-	console.log('Render Events --->')
+	//console.log('Render Events')
+
+				console.log(currentSet);
 
 				var htmlToAdd = 
 				'<div class="col-md-4">'+
+				'<div id="bigplay" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+				'<input type="image" src="/img/site/event_play.png" alt="Play" '+currentSet.index+'"></div>'+
 		        '<p><b><a href="/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
 		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
-		        '<p>Line Up:' + currentSet.artist+  '</p>' +
-		        '<input type="image" src="/img/site/event_play.png" alt="Play" id="bigplay'+currentSet.index+'" class="bigplaybutton">'+
+		        '<p>Line Up: ' + currentSet.lineup.artist+
 				'</div>';
 			
 				jQuery("#events-holder").append(htmlToAdd);
 
 
 				$("#bigplay"+currentSet.index).click(function(){
-  					loadMixgogoPlayer(currentSet.index);
+  					console.log('clicked!');
+  					loadMixgogoPlayer(currentSet);
   				});	 
+
+  					
+
+
+
 }
 
 
@@ -130,12 +138,11 @@ function soundcloudSDK(){
 function loadMixgogoPlayer(currentSet){
 
 	console.log(currentSet);
+
 	//var playingNow = document.getElementById('set-info');
-
-
-	console.log("This is playing now ->")
+	//console.log("This is playing now ->")
 	//console.log(playingNow);
-
+	
 	console.log(empty);
 	console.log(currentSet);
 
@@ -147,7 +154,7 @@ function loadMixgogoPlayer(currentSet){
 
 				console.log("Let's load Mixgogo awesome player!");
 
-				var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
+				var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
 				document.getElementById("art-work").innerHTML = setArtwork;
 
 				var setsInfo = '<h3>'+currentSet.title+'</h3>';
@@ -166,7 +173,7 @@ function loadMixgogoPlayer(currentSet){
 
 				// document.getElementById("#player").innerHTML = '';
 
-				var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
+				var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
 				document.getElementById("art-work").innerHTML = setArtwork;
 
 
@@ -201,10 +208,11 @@ function loadMixgogoPlayer(currentSet){
 //Once the player is loaded woth rigth Set, let's play its sound
 function playNow (currentSet){
 
+				console.log(currentSet._id);
 
 				SC.stream("/tracks/"+currentSet.id, function(sound){
-				sound.play();
-				console.log("I'm playing!!!");
+					sound.play();
+					console.log("I'm playing!!!");
 				});
 
 
@@ -232,6 +240,8 @@ function playNow (currentSet){
 
 
 function renderEvent(){
+
+	console.log("inside the Render event function");
 
 
 	var urlArray = window.location.href.split('/');

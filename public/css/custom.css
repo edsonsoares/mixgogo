@@ -100,6 +100,18 @@ body{
 	margin-top: 50px;
 }
 
+.thumbnail {
+    border: medium none;
+    box-shadow: none;
+    display: block;
+    line-height: 1;
+    position: relative;
+    z-index: 2; /* Added Lower Z-Index Value */
+}
+
+
+
+
 
 /* 2.2) Calendar Nav */
 
