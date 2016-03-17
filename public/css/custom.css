@@ -110,7 +110,9 @@ body{
 }
 
 
-
+#bigplay {
+    z-index: 3; /* Added Higher Z-Index Value from thumbnail div */
+}
 
 
 /* 2.2) Calendar Nav */

@@ -69,13 +69,6 @@ res.render('upcoming.html')
 
 
 
-
-
-
-
-
-
-
 // /** ____________________________________________________________________________
 
 //  * GET '/api/get'
@@ -114,10 +107,9 @@ router.get('/api/get', function(req, res){
 
 
 
-router.get('/event/:id', function(req,res){
+router.get('/api/event/:id', function(req,res){
 
 res.render('event.html')
-
 
 // var requestedId = req.param('id');
 
@@ -197,30 +189,15 @@ router.get('/api/get/:id', function(req, res){
  
  */
 
+
+
 router.get('/api/add', function(req,res){
 
   console.log('got into the add set page');
 
   res.render('add.html', {layout:"noplayer-layout"})
 
-
  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -244,11 +221,9 @@ router.get('/edit/:id', function(req,res){
     }
 
 
-
-
     return res.render('edit.html', viewData)
-
     //return res.render('edit.html', {layout:"noplayer-layout"}, viewData)
+
   })
 
 })
@@ -286,16 +261,12 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var minPrice = req.body.minPrice;
     var maxPrice = req.body.maxPrice;
     var buyUrl = req.body.buyUrl;
-    
-
     var dateEvent = req.body.dateEvent;
     var startTime = req.body.startTime;
     var endTime = req.body.endTime;
     var address = req.body.adress;
     var zip = req.body.zip;
     var city = req.body.city;
-
-
 
    
     // hold all this data in an object
@@ -322,9 +293,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
 
 
 
-
-
-// NOW, we need to deal with the image
+  // NOW, we need to deal with the image
   // the contents of the image will come in req.files (not req.body)
   var filename = req.files.artcover.name; // actual filename of file
   var path = req.files.artcover.path; // will be put into a temp directory
@@ -386,7 +355,16 @@ router.post('/api/create', multipartMiddleware, function(req, res){
           }
 
               //respond with rendering a page
-              res.render('event.html', jsonData);
+              //res.render('event.html', jsonData);
+
+             res.render('event.html', jsonData);
+
+             console.log(set.id);
+
+            res.redirect ("/api/event/" + set.id); 
+
+
+
 
         })  //end of set save
 

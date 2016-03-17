@@ -85,7 +85,7 @@ function renderEvents(currentSet){
 				var htmlToAdd = 
 				'<div class="col-md-4">'+
 				'<div id="bigplay" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-				'<input type="image" src="/img/site/event_play.png" alt="Play" '+currentSet.index+'"></div>'+
+				'<input type="image" src="/img/site/event_play.png" alt="Play"'+currentSet.index+'"></div>'+
 		        '<p><b><a href="/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
 		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
 		        '<p>Line Up: ' + currentSet.lineup.artist+
