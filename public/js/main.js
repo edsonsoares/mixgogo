@@ -6,16 +6,14 @@ var empty = true;
 // This is where frontend Javascript runs //
 
 function init() {
-	//getSoundcloud();
 	pullData();
-  	
-  	
-}
+	soundcloudSDK();
+	getSoundcloudDetails();	
+ }
 
 
 
 // FEED & PLAYER //
-
 //Let's pull the data MongoDB
 
 function pullData(){
@@ -26,45 +24,26 @@ function pullData(){
 		url : '/api/get',
 		dataType : 'json',
 		success : function(response) {
+			
 			console.log('got data: ');
 			console.log(response);
-
 			var sets = response.sets;
+			
 			// Pass out the index
 			var currentSet = 0;
 			
-			for(var i=0; i< sets.length; i++){
-				
+			for(var i=0; i< sets.length; i++){		
 				sets[currentSet].index = currentSet;
 	           	//console.log("Esse é o index");
 	           	//console.log(i);
 	           	renderEvents(sets[currentSet]);
 	           	currentSet++;
-
 	        }
 
-				// var htmlToAdd = 
-				// '<div class="col-md-4">'+
-		  //       '<p><b><a href="/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
-		  //       '<p>Date: ' + currentSet.dateEvent +' </p>' +
-		  //       '<p>Line Up:' + currentSet.artist+  '</p>' +
-		  //       '<input type="image" src="/img/site/event_play.png" alt="Play" id="bigplay'+currentSet.index+'" class="bigplaybutton">'+
-				// '</div>';
-			
-				// jQuery("#events-holder").append(htmlToAdd);
-
-				// $("#bigplay"+currentSet.index).click(function(){
-  		// 			loadMixgogoPlayer(currentSet.index);
-  		// 		});	 
-
-  	// 		postPlayer(sets[currentSet]); 
-
-			// }
 
 		}
 	});
 
-	soundcloudSDK();
 	renderEvent();
 
 }
@@ -74,18 +53,15 @@ function pullData(){
 
 
 //RENDER EVENTS //
-
-
 function renderEvents(currentSet){
 
 	//console.log('Render Events')
-
-				console.log(currentSet);
+	//console.log(currentSet);
 
 				var htmlToAdd = 
 				'<div class="col-md-4">'+
-				'<div id="bigplay" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-				'<input type="image" src="/img/site/event_play.png" alt="Play"'+currentSet.index+'"></div>'+
+				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+				'<input type="image" src="/img/site/event_play.png" id="bigplay'+currentSet.index+'" alt="Play">'+
 		        '<p><b><a href="/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
 		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
 		        '<p>Line Up: ' + currentSet.lineup.artist+
@@ -124,11 +100,19 @@ function soundcloudSDK(){
   	});
 
 	SC.connect({
+
 			'connect': function(e)
 				{
-					console.log(e);
+					console.log("Im inside connect");
+
+					console.log("This is E --->" +  e);
 				}
 	});
+
+
+
+
+
 }
     
 
@@ -202,15 +186,42 @@ function loadMixgogoPlayer(currentSet){
 
 	playNow(currentSet);
 
+	console.log("THIS SHOULD BE PLAYING--->" + currentSet)
+
 
 }
 
 //Once the player is loaded woth rigth Set, let's play its sound
 function playNow (currentSet){
 
-				console.log(currentSet._id);
+				console.log("This is the current ID on MongDB--->" + currentSet._id);
 
-				SC.stream("/tracks/"+currentSet.id, function(sound){
+
+	//Now gets the ID in soundcloud (needed to play the audio)
+	$.getJSON('https://api.soundcloud.com/tracks?client_id=95761a6a9b70583b71e0f8436edc8db3',
+               {format: 'js',
+               type: 'GET', 
+               iframe:true},
+               function (data) {
+                	console.log("1) Get data from Soundcloud -->");
+                	console.log(data);
+	                	for (var i = 0; i < data.length; i++) {
+		                	
+							var set = {
+								title: data[i].title,
+		                		description: data[i].description,
+		                	 	permalink_url: data[i].permalink_url,
+		                		stream_url: data[i].stream_url,
+		                		waveform: data[i].waveform_url,
+		                		id: data[i].id,
+		                		artwork: data[i].artwork_url
+							}
+		                	
+						}
+
+				 });
+
+				SC.stream("/tracks/"+set.id, function(sound){
 					sound.play();
 					console.log("I'm playing!!!");
 				});
@@ -222,23 +233,7 @@ function playNow (currentSet){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // EVENT PAGE //
-
-
-
 function renderEvent(){
 
 	console.log("inside the Render event function");
@@ -253,10 +248,10 @@ function renderEvent(){
 		dataType : 'json',
 		success : function(response) {
 			//console.log('got data for single event: ');
-			//console.log(response);
+			
+			//console.log("THIS IS THE RESPONSE" + response);
 
 			var set = response.set;
-
 
 			
 			var htmlToAdd = 

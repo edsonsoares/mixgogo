@@ -268,7 +268,9 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var zip = req.body.zip;
     var city = req.body.city;
 
-   
+   console.log("Example of Soundcloud URL --->" + soundcloudUrl);
+
+
     // hold all this data in an object
     // this object should be structured the same way as your db model
     var setObj = {
