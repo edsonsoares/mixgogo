@@ -1,7 +1,5 @@
 var empty = true;
 
-
-
 // CUSTOM JS FILE //
 // This is where frontend Javascript runs //
 
@@ -92,7 +90,7 @@ function renderEvents(currentSet){
 //initialize Soundcloud SDK
 function soundcloudSDK(){
 
-	console.log("Let's play with Soundcloud SDK!");
+	console.log("SDK On!");
 
 	SC.initialize({
     	client_id: "95761a6a9b70583b71e0f8436edc8db3",
@@ -101,12 +99,12 @@ function soundcloudSDK(){
 
 	SC.connect({
 
-			'connect': function(e)
-				{
-					console.log("Im inside connect");
+			// 'connect': function(e)
+			// 	{
+			// 		console.log("Im inside connect");
 
-					console.log("This is E --->" +  e);
-				}
+			// 		console.log("This is E --->" +  e);
+			// 	}
 	});
 
 
@@ -194,41 +192,23 @@ function loadMixgogoPlayer(currentSet){
 //Once the player is loaded woth rigth Set, let's play its sound
 function playNow (currentSet){
 
-				console.log("This is the current ID on MongDB--->" + currentSet._id);
+		// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
+		var track_url = currentSet.lineup.soundcloudUrl;
+		
+	
 
+		// With ajax we use the soundcloudUrl to access the tracks' JSON file, and find its id
+		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+			  	console.log("THIS IS THE RESULT ---->"+result);
+				var track_id = result.id;
 
-	//Now gets the ID in soundcloud (needed to play the audio)
-	$.getJSON('https://api.soundcloud.com/tracks?client_id=95761a6a9b70583b71e0f8436edc8db3',
-               {format: 'js',
-               type: 'GET', 
-               iframe:true},
-               function (data) {
-                	console.log("1) Get data from Soundcloud -->");
-                	console.log(data);
-	                	for (var i = 0; i < data.length; i++) {
-		                	
-							var set = {
-								title: data[i].title,
-		                		description: data[i].description,
-		                	 	permalink_url: data[i].permalink_url,
-		                		stream_url: data[i].stream_url,
-		                		waveform: data[i].waveform_url,
-		                		id: data[i].id,
-		                		artwork: data[i].artwork_url
-							}
-		                	
-						}
-
-				 });
-
-				SC.stream("/tracks/"+set.id, function(sound){
+				SC.stream('/tracks/'+track_id, function(sound){
 					sound.play();
-					console.log("I'm playing!!!");
+					console.log("Track playing-->" + track_id);	
 				});
-
-
-
+			});
 }
+
 
 
 
@@ -279,14 +259,7 @@ function renderEvent(){
 
 
 
-
-
-
 // DELETE EVENT//
-
-
-
-
 function deleteEvent(setId){
 
 	//var targetedId = event.target.id;
