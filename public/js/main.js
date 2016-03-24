@@ -60,7 +60,7 @@ function renderEvents(currentSet){
 				'<div class="col-md-4">'+
 				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
 				'<input type="image" src="/img/site/event_play.png" id="bigplay'+currentSet.index+'" alt="Play">'+
-		        '<p><b><a href="/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
+		        '<p><b><a href="api/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
 		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
 		        '<p>Line Up: ' + currentSet.lineup.artist+
 				'</div>';
@@ -236,7 +236,7 @@ function renderEvent(){
 			
 			var htmlToAdd = 
 					'<div class="col-md-4">'+
-		            '<p><b><a href="/event/'+set._id+'>">' + set.title + '</a></b></p>' +
+		            '<p><b><a href="api/event/'+set._id+'>">' + set.title + '</a></b></p>' +
 		            '<p>Date: ' + set.dateEvent +' </p>' +
 		            '<p>Line Up:' + set.artist+  '</p>' +
 		            '<p>About:' + set.description+ '</p>' +

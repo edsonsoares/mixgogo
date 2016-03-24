@@ -201,7 +201,7 @@ router.get('/api/add', function(req,res){
 
 
 
-router.get('/edit/:id', function(req,res){
+router.get('/api/edit/:id', function(req,res){
 
   var requestedId = req.params.id;
 
