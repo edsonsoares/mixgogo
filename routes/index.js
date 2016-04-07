@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
-// our db model
+// our db models
 var Set = require("../models/model.js");
+var Today = require("../models/dates.js");
+
+
 
 // S3 File dependencies
 var AWS = require('aws-sdk');
@@ -60,7 +63,7 @@ router.get('/', function(req, res) {
 router.get('/upcoming', function(req,res){
 
 
-res.render('upcoming.html')
+  res.render('upcoming.html')
 
 
 })  
@@ -76,30 +79,104 @@ res.render('upcoming.html')
 //  * @return {Object} JSON
 //  */
 
+// router.get('/api/get', function(req, res){
+
+//   // mongoose method to find all, see http://mongoosejs.com/docs/api.html#model_Model.find
+//   Set.find(function(err, data){
+    
+//     // if err or no sets found, respond with error 
+//     if(err || data == null){
+//       var error = {status:'ERROR', message: 'Could not find sets'};
+//       return res.json(error);
+//     }
+
+//     // otherwise, respond with the data 
+//     var jsonData = {
+//       status: 'OK',
+//       sets: data
+//     } 
+
+//     res.json(jsonData);
+//     // res.render('upcoming.html', jsonData);
+
+//   })
+
+// });
+
+
+
+
+
+
+/** ____________________________________________________________________________
+
+ * GET '/api/get'
+ * Receives a GET request to get all set details
+ * @return {Object} JSON
+ */
+
 router.get('/api/get', function(req, res){
 
-  // mongoose method to find all, see http://mongoosejs.com/docs/api.html#model_Model.find
-  Set.find(function(err, data){
-    // if err or no sets found, respond with error 
+  
+  // var startDate = req.param('startDate') || new Date();
+  // var endDate = new Date()
+
+  // // mongoose method to find sets from events happening later than today, 
+  // //see http://mongoosejs.com/docs/api.html#model_Model.find
+  // Set.find( 
+  //   {
+  //     'dateEvent':
+  //       {
+  //         $gte: startDate,
+  //         $lte: endDate
+  //       }
+
+
+  //   }
+
+
+
+
+  // mongoose method to find sets from events happening later than today, 
+  //see http://mongoosejs.com/docs/api.html#model_Model.find
+  Set.find( 
+    {
+      'dateEvent':
+        {
+          $gte: new Date(),
+        }
+
+    }
+
+    ,function(err, data){
+
+      // if err or no sets found, respond with error 
     if(err || data == null){
       var error = {status:'ERROR', message: 'Could not find sets'};
       return res.json(error);
     }
 
     // otherwise, respond with the data 
-
     var jsonData = {
       status: 'OK',
       sets: data
     } 
 
-    res.json(jsonData);
+    //console.log("whateverrr");
 
+    res.json(jsonData);
     // res.render('upcoming.html', jsonData);
 
   })
 
 });
+
+
+
+
+
+
+
 
 
 
@@ -193,7 +270,7 @@ router.get('/api/get/:id', function(req, res){
 
 router.get('/api/add', function(req,res){
 
-  console.log('got into the add set page');
+  //console.log('got into the add set page');
 
   res.render('add.html', {layout:"noplayer-layout"})
 
@@ -248,8 +325,8 @@ router.get('/api/edit/:id', function(req,res){
 
 router.post('/api/create', multipartMiddleware, function(req, res){
 
-  console.log('the incoming data >> ' + JSON.stringify(req.body));
-  console.log('the incoming image file >> ' + JSON.stringify(req.files.artcover));
+  //console.log('the incoming data >> ' + JSON.stringify(req.body));
+  //console.log('the incoming image file >> ' + JSON.stringify(req.files.artcover));
 
 
     // pull out the information from the req.body
@@ -268,7 +345,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var zip = req.body.zip;
     var city = req.body.city;
 
-   console.log("Example of Soundcloud URL --->" + soundcloudUrl);
+   //console.log("Example of Soundcloud URL --->" + soundcloudUrl);
 
 
     // hold all this data in an object
@@ -325,10 +402,10 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     // Put the above Object in the Bucket
     s3bucket.putObject(params, function(err, data) {
       if (err) {
-        console.log(err)
+        //console.log(err)
         return;
       } else {
-        console.log("Successfully uploaded data to s3 bucket");
+        //console.log("Successfully uploaded data to s3 bucket");
 
         // now that we have the image
         // we can add the s3 url our person object from above
@@ -345,8 +422,8 @@ router.post('/api/create', multipartMiddleware, function(req, res){
             var error = {status:'ERROR', message: 'Error saving set'};
             return res.json(error);
           } else {
-              console.log('saved a new set!');
-              console.log(data);
+              //console.log('saved a new set!');
+              //console.log(data);
 
               // now return the json data of the new set
               var jsonData = {
@@ -361,7 +438,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
 
              res.render('event.html', jsonData);
 
-             console.log(set.id);
+             //console.log(set.id);
 
             res.redirect ("/api/event/" + set.id); 
 
@@ -461,8 +538,8 @@ router.post('/api/edit/:id', function(req, res){
         return res.json(error);
       }
 
-      console.log('updated the set!');
-      console.log(data);
+      //console.log('updated the set!');
+      //console.log(data);
 
       // now return the json data of the new person
       var jsonData = {

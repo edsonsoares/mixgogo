@@ -13,13 +13,12 @@ function init() {
 
 // FEED & PLAYER //
 //Let's pull the data MongoDB
-
 function pullData(){
 
 	console.log('Pulling the Data:');
 
 	jQuery.ajax({
-		url : '/api/get',
+		url : '/api/get/',
 		dataType : 'json',
 		success : function(response) {
 			
@@ -43,6 +42,7 @@ function pullData(){
 	});
 
 	renderEvent();
+	renderWeek();
 
 }
 
@@ -80,6 +80,47 @@ function renderEvents(currentSet){
 }
 
 
+
+
+
+
+//RENDER WEEK NAVIGATION //
+function renderWeek(){
+
+	//console.log('Render Events')
+	//console.log(currentSet);
+
+
+				// '<div class="col-md-1">
+				// 	<input type="image" src="/img/site/week_left.png"
+				// </div>'
+
+
+
+				// '<div class="col-md-1">
+				// 	<input type="image" src="/img/site/week_right.png"
+				// </div>'
+
+				console.log("inside the Render week function");
+
+				var weekDays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sund"];
+				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+				var today = new Date();
+				
+				var thisDay = today.getDay();
+				thisDay = weekDays[thisDay];
+
+				var thisMonth = today.getMonth();
+				thisMonth = monthNames[thisMonth];
+
+				var htmlToAdd = '<div class="col-md-7">'+thisDay+'<br>'+today.getDate()+'<br>'+thisMonth+'</div>'
+			
+				jQuery("#dates-holder").append(htmlToAdd);
+
+
+
+}
 
 
 

@@ -2,6 +2,16 @@
 
 	<div id="calendar-container">
 
+		<div class="container">
+
+			<div class="row" id="dates-holder">
+
+				
+
+			</div>
+
+		</div>
+
 
 	</div>
 
@@ -17,56 +27,6 @@
 		<div class="container">
 				
 				<div class="row" id="events-holder">
-
-
-	          <!-- <ul>
-	           
-	           {{ var i = 0; }}
-	           {{ sets.forEach(function(set)}} 
-
-	            <p><b><a href="/event/{{set._id}}>">{{sets.title}} </a></b></p>
-	            <p>Date: {{set.dateEvent}} </p>
-	            <p>Line Up: {{set.artist}}</p>
-	            <p>About: {{set.description}} </p>
-
-	            {{i++;}} 
-
-
-
-
-
-
-	              <div id='your_player_html<%= i; %>'>The player</div>
-	              <div id='your_player_html_2<%= i; %>'>The player</div>
-
-
-	              <script>
-
-	              $.getJSON('http://soundcloud.com/oembed?callback=?',
-	                {format: 'js', url: "<%= set.soundcloudUrl %>", iframe:true},
-	                function(data) {
-	                console.log('done getting soundcloud oembed',data);
-	                $('#your_player_html<%= i; %>').html(data['html']);
-	              });
-
-	              console.log(set.soundcloudUrl);
-
-
-
-	              $.getJSON('http://soundcloud.com/oembed?callback=?',
-	                {format: 'js', url: "<%= set.soundcloudUrl2 %>", iframe:true},
-	                function(data) {
-	                console.log('done getting soundcloud oembed',data);
-	                $('#your_player_html_2<%= i; %>').html(data['html']);
-	                })
-
-	              </script>
-
-
-
-        <% }) %> 
-
-	          </ul> -->
 
 				</div>
 
