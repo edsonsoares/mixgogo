@@ -42,8 +42,9 @@ function pullData(){
 	});
 
 	renderEvent();
-	renderWeek();
-
+	//renderWeek();
+	addMoreDays();
+	
 }
 
 
@@ -73,9 +74,6 @@ function renderEvents(currentSet){
   					loadMixgogoPlayer(currentSet);
   				});	 
 
-  					
-
-
 
 }
 
@@ -83,45 +81,88 @@ function renderEvents(currentSet){
 
 
 
+var dayCounter = 0;
+var week = 7;
 
-//RENDER WEEK NAVIGATION //
+
+// //RENDER WEEK NAVIGATION //
 function renderWeek(){
 
-	//console.log('Render Events')
-	//console.log(currentSet);
+// 	//console.log('Render Events')
+// 	//console.log(currentSet);
 
 
-				// '<div class="col-md-1">
-				// 	<input type="image" src="/img/site/week_left.png"
-				// </div>'
+// 				// '<div class="col-md-1">
+// 				// 	<input type="image" src="/img/site/week_left.png"
+// 				// </div>'
 
 
 
-				// '<div class="col-md-1">
-				// 	<input type="image" src="/img/site/week_right.png"
-				// </div>'
+// 				// '<div class="col-md-1">
+// 				// 	<input type="image" src="/img/site/week_right.png"
+// 				// </div>'
 
-				console.log("inside the Render week function");
+// 				// console.log("inside the Render week function");
 
-				var weekDays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sund"];
-				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// 				// var weekDays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sund"];
+// 				// var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-				var today = new Date();
+// 				// var today = new Date();
 				
-				var thisDay = today.getDay();
-				thisDay = weekDays[thisDay];
+// 				// var thisDay = today.getDay();
+// 				// thisDay = weekDays[thisDay];
 
-				var thisMonth = today.getMonth();
-				thisMonth = monthNames[thisMonth];
+// 				// var thisMonth = today.getMonth();
+// 				// thisMonth = monthNames[thisMonth];
 
-				var htmlToAdd = '<div class="col-md-7">'+thisDay+'<br>'+today.getDate()+'<br>'+thisMonth+'</div>'
+// 				// var htmlToAdd = '<div class="col-md-7">'+thisDay+'<br>'+today.getDate()+'<br>'+thisMonth+'</div>'
 			
-				jQuery("#dates-holder").append(htmlToAdd);
+// 				// jQuery("#dates-holder").append(htmlToAdd);
 
+
+// 				addMoreDays();
+
+
+			
+				
+
+// 				// var allDays = [Date()];
+
+// 				// var todayIs = 0;
+
+// 				// for(var i=0; i< allDays.length; i++){		
+// 				// allDays[todayIs].index = todayIs;
+// 	   //         	renderEvents(sets[currentSet]);
+// 	   //         	todayIs++;
+// 	   // 		    }
 
 
 }
 
+$('body').click(function(){
+	addMoreDays();
+});
+
+
+//$('#buttonID').click(addMoreDays)
+
+
+function addMoreDays(){
+
+		console.log('Adding More Days');
+
+			for(var i = dayCounter; i < week; i++){
+				var now = moment();
+				var format = 'ddd, D, MMM';
+				var result = moment(now).add(i, 'day').format(format);
+				var htmlToAdd = '<div class="col-md-7">'+result+'</div>';
+				dayCounter++;
+
+				jQuery("#dates-holder").append(htmlToAdd);
+			}
+
+
+}
 
 
 
@@ -288,8 +329,6 @@ function renderEvent(){
 				jQuery("#event-detail").append(htmlToAdd);
 
 				//document.getElementById("deleteEvent").addEventListener('click', deleteEvent(set._id));
-
-
 
 		}
 	})	

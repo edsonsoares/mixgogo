@@ -7,7 +7,6 @@ var Set = require("../models/model.js");
 var Today = require("../models/dates.js");
 
 
-
 // S3 File dependencies
 var AWS = require('aws-sdk');
 var awsBucketName = process.env.AWS_BUCKET_NAME;
@@ -22,8 +21,6 @@ var s3 = new AWS.S3();
 var fs = require('fs');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
-
-
 
 
 // /** ____________________________________________________________________________

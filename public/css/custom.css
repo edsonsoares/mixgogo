@@ -8,16 +8,31 @@ body{
 	background-attachment:fixed;
 }
 
-.bgimage{
+.bgheader{
 	background: url(/img/site/background1.png) no-repeat; 
 	background-position: center top;
 	background-size: 100%;
 	height:800px;
 }
 
+.bgpromoter{
+	background: url(/img/site/background2.png) no-repeat; 
+	background-position: center top;
+	background-size: 100%;
+	height:800px;
+}
+
+
+
+.btn-player{
+	background: initial;
+	border: none;
+	border-radius: 0px;
+}
+
+
 .home{
 	    
-	  
 		width: 100%;
 		height: 100%; 
 }
@@ -206,7 +221,7 @@ body{
 /* Event Title on event's page */
 
 h1{font-family: 'Lato', sans-serif;
-	font-size: 58px;
+	font-size: 46px;
 	font-weight: bold;
 	text-transform: uppercase;
 	color: #ffffff;
