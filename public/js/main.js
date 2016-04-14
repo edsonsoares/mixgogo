@@ -43,10 +43,9 @@ function pullData(){
 
 	renderEvent();
 	//renderWeek();
-	addMoreDays();
+	pullDays();
 	
 }
-
 
 
 
@@ -54,13 +53,13 @@ function pullData(){
 //RENDER EVENTS //
 function renderEvents(currentSet){
 
-	//console.log('Render Events')
+	console.log('Render Events')
 	//console.log(currentSet);
 
 				var htmlToAdd = 
-				'<div class="col-md-4">'+
+				'<div class="col-md-3">'+
 				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-				'<input type="image" src="/img/site/event_play.png" id="bigplay'+currentSet.index+'" alt="Play">'+
+				'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
 		        '<p><b><a href="api/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
 		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
 		        '<p>Line Up: ' + currentSet.lineup.artist+
@@ -74,97 +73,109 @@ function renderEvents(currentSet){
   					loadMixgogoPlayer(currentSet);
   				});	 
 
-
 }
 
 
 
 
 
-var dayCounter = 0;
-var week = 7;
-
-
-// //RENDER WEEK NAVIGATION //
-function renderWeek(){
-
-// 	//console.log('Render Events')
-// 	//console.log(currentSet);
-
-
-// 				// '<div class="col-md-1">
-// 				// 	<input type="image" src="/img/site/week_left.png"
-// 				// </div>'
+//RENDER WEEK NAVIGATION //
 
 
 
-// 				// '<div class="col-md-1">
-// 				// 	<input type="image" src="/img/site/week_right.png"
-// 				// </div>'
+// function pullDays(){
 
-// 				// console.log("inside the Render week function");
+// 	for(var i = dayCounter; i < week; i++){
+// 		var now = moment();
+// 		var format = 'ddd, D, MMM';
+// 		var result = moment(now).add(i, 'day').format(format);
+// 		renderDays(result);
+// 		dayCounter++;
+// 	}
 
-// 				// var weekDays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sund"];
-// 				// var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// function renderDays(dayCounter){
 
-// 				// var today = new Date();
-				
-// 				// var thisDay = today.getDay();
-// 				// thisDay = weekDays[thisDay];
+// 	var htmlToAdd = '<div class="col-md-7">'+dayCounter+'</div>';
 
-// 				// var thisMonth = today.getMonth();
-// 				// thisMonth = monthNames[thisMonth];
+// 	jQuery("#day-holder").append(htmlToAdd);
 
-// 				// var htmlToAdd = '<div class="col-md-7">'+thisDay+'<br>'+today.getDate()+'<br>'+thisMonth+'</div>'
+// }
+
+
+
+// var dayCounter = 0;
+//var week = 7;
+
+
+
+
+// CALENDAR : Pull dates based on today
+
+function pullDays(){
 			
-// 				// jQuery("#dates-holder").append(htmlToAdd);
+			var week = [0,1,2,3,4,5,6];
+			var currentDay = 0;
 
-
-// 				addMoreDays();
-
-
-			
-				
-
-// 				// var allDays = [Date()];
-
-// 				// var todayIs = 0;
-
-// 				// for(var i=0; i< allDays.length; i++){		
-// 				// allDays[todayIs].index = todayIs;
-// 	   //         	renderEvents(sets[currentSet]);
-// 	   //         	todayIs++;
-// 	   // 		    }
-
-
-}
-
-$('body').click(function(){
-	addMoreDays();
-});
-
-
-//$('#buttonID').click(addMoreDays)
-
-
-function addMoreDays(){
-
-		console.log('Adding More Days');
-
-			for(var i = dayCounter; i < week; i++){
-				var now = moment();
-				var format = 'ddd, D, MMM';
-				var result = moment(now).add(i, 'day').format(format);
-				var htmlToAdd = '<div class="col-md-7">'+result+'</div>';
-				dayCounter++;
-
-				jQuery("#dates-holder").append(htmlToAdd);
+			for(var i = 0; i < week.length; i++){
+				week[currentDay].index = currentDay;
+				renderWeek(week[currentDay]);
+				currentDay++;
 			}
 
+			console.log('This is the CurentDay being passed -->');
+			console.log(currentDay);
+
+
+
+			//Old version
+
+			// for(var i = dayCounter; i < week.length; i++){
+			// 	var now = moment();
+			// 	var format = 'ddd, D, MMM';
+			// 	var result = moment(now).add(i, 'day').format(format);
+			// 	dayCounter++;
+
+			// 	console.log('Result is --->');
+			// 	console.log(result);
+				
+			// }
+
+
+			// var htmlToAdd = '<button type="button" class="btn btn-default btn-calendar" id="day-holder">'+result+'</button></div>';
+
+			// jQuery("#dates-holder").append(htmlToAdd);
+
 
 }
 
 
+
+//CALENDAR: Now fill in the other days of the week
+
+function renderWeek(currentDay){
+
+			console.log('inside render week');
+
+			var now = moment();
+			var format = 'ddd, D, MMM';
+			var result = moment(now).add(currentDay, 'day').format(format);
+			//dayCounter++;
+
+			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-default btn-lg" id="day-holder">'+result+'</button></div>';
+
+			jQuery("#dates-holder").append(htmlToAdd);
+
+}
+
+
+
+	
+//CALENDAR: move days forwad and backwards at week toolbar
+
+$("#next-week").click(function(){
+		pullDays();
+		console.log('Moved to Next Week');
+	});
 
 
 

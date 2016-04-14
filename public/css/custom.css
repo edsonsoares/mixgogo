@@ -30,6 +30,82 @@ body{
 	border-radius: 0px;
 }
 
+.btn-calendar{
+	background: none;
+	padding: 12px 22px;
+	width: 100px;
+	border: 2px solid #000000;
+	color: #000000;
+	white-space:normal !important;
+    word-wrap:break-word; 
+}
+
+
+.btn-calendar:hover, .btn-calendar:focus, .btn-calendar:active{
+	color: #000000;
+	border-color: #000000;
+}
+.btn-calendar:active, .btn-calendar.active {
+	border-color: #000000;
+	color: #000000;
+	box-shadow: none;
+}
+
+.navbar-custom  {
+	min-height: 150px;
+	background: none;
+	padding-left: 150px;
+	padding-right: 150px;
+	margin-bottom: 0px;
+	vertical-align: middle;
+	border: none;
+}
+
+.navbar-brand{
+	min-height: 150px;
+	padding-top: 49px;
+}
+
+.navbar-cities {
+	padding-top: 52px;
+	min-height: 150px;
+}
+
+.navbar .nav > li > a {
+    
+    text-decoration: none;
+    color:  white;
+    font-size: 28px;
+    font-weight: lighter;
+
+}
+
+#navbar-week{
+	padding-top: 27px;
+}
+
+/*
+
+.helper{	
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+
+#navbar > ul {
+display: table-row;
+}
+ 
+#navbar > ul > li {
+display: table-cell;
+float: none;
+vertical-align: middle;
+text-align: center;
+
+}*/
+
+
 
 .home{
 	    
@@ -92,15 +168,17 @@ body{
 	top: 0px;
 	height: auto;
 	margin: 0 auto;
-	padding-top: 150px;
+	/*padding-top: 150px;*/
 }
 
 /* 2.1) Feed */
 
 
 #sets-container{
-	margin-top: 50px;
-}
+	padding-left: 150px;
+	padding-right: 150px;
+/*	margin-top: 50px;
+*/}
 
 
 /* 2.1.1) Each Set Div */
@@ -126,12 +204,23 @@ body{
     display: block;
     line-height: 1;
     position: relative;
-    z-index: 2; /* Added Lower Z-Index Value */
+    z-index: 2; 
+    max-width:360px; /* Added Lower Z-Index Value */
 }
 
 
 #bigplay {
     z-index: 3; /* Added Higher Z-Index Value from thumbnail div */
+}
+
+.bigplay{
+	position: absolute;
+	margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
 }
 
 
