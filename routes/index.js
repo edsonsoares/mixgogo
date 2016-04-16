@@ -23,117 +23,25 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 
 
-// /** ____________________________________________________________________________
 
-
-
-
-
-
-
-
-
-
-/**
+/**  NOT WORKING - TRYING TO GET THE FIRST 5 EVENTS
  * GET '/'
  * Default home route. Just relays a success message back.
  * @param  {Object} req
  * @return {Object} json
- */
+//  */
+
+
+
 router.get('/', function(req, res) {
-  
-  var jsonData = {
-  	'name': 'Mixgogo',
-  	'api-status':'OK'
-  }
 
-  // respond with json data
-  //res.json(jsonData)
-
-  // respond with html
-  res.render('subscribe.html', {layout: null})
+  res.render('subscribe.html',{layout: 'noplayer-layout'})
 
 });
 
 
-
-router.get('/upcoming', function(req,res){
-
-
-  res.render('upcoming.html')
-
-
-})  
-
-
-
-
-
-// /** ____________________________________________________________________________
-
-//  * GET '/api/get'
-//  * Receives a GET request to get all set details
-//  * @return {Object} JSON
-//  */
-
-// router.get('/api/get', function(req, res){
-
-//   // mongoose method to find all, see http://mongoosejs.com/docs/api.html#model_Model.find
-//   Set.find(function(err, data){
-    
-//     // if err or no sets found, respond with error 
-//     if(err || data == null){
-//       var error = {status:'ERROR', message: 'Could not find sets'};
-//       return res.json(error);
-//     }
-
-//     // otherwise, respond with the data 
-//     var jsonData = {
-//       status: 'OK',
-//       sets: data
-//     } 
-
-//     res.json(jsonData);
-//     // res.render('upcoming.html', jsonData);
-
-//   })
-
-// });
-
-
-
-
-
-
-/** ____________________________________________________________________________
-
- * GET '/api/get'
- * Receives a GET request to get all set details
- * @return {Object} JSON
- */
-
-router.get('/api/get', function(req, res){
-
+router.get('/', function(req, res) {
   
-  // var startDate = req.param('startDate') || new Date();
-  // var endDate = new Date()
-
-  // // mongoose method to find sets from events happening later than today, 
-  // //see http://mongoosejs.com/docs/api.html#model_Model.find
-  // Set.find( 
-  //   {
-  //     'dateEvent':
-  //       {
-  //         $gte: startDate,
-  //         $lte: endDate
-  //       }
-
-
-  //   }
-
-
-
-
   // mongoose method to find sets from events happening later than today, 
   //see http://mongoosejs.com/docs/api.html#model_Model.find
   Set.find( 
@@ -143,30 +51,82 @@ router.get('/api/get', function(req, res){
           $gte: new Date(),
         }
 
-    }
+    }).sort('-dateEvent').limit(4).exec(function(err, data){
 
-    ,function(err, data){
+          // if err or no sets found, respond with error 
+        if(err || data == null){
+          var error = {status:'ERROR', message: 'Could not find sets'};
+          return res.json(error);
+        }
 
-      // if err or no sets found, respond with error 
-    if(err || data == null){
-      var error = {status:'ERROR', message: 'Could not find sets'};
-      return res.json(error);
-    }
+        // otherwise, respond with the data 
+        var jsonData = {
+          status: 'OK',
+          sets: data
+        } 
 
-    // otherwise, respond with the data 
-    var jsonData = {
-      status: 'OK',
-      sets: data
-    } 
+        //console.log("whateverrr");
 
-    //console.log("whateverrr");
+        res.json(jsonData);
+        
+    })    
+  
+});
 
-    res.json(jsonData);
-    // res.render('upcoming.html', jsonData);
 
-  })
+
+
+
+
+
+router.get('/upcoming', function(req,res){
+  res.render('upcoming.html')
+})  
+
+
+
+
+// * ____________________________________________________________________________
+// * Receives a GET request to get all set details
+//  * @return {Object} JSON
+
+
+router.get('/api/get', function(req, res){
+
+  
+  // mongoose method to find sets from events happening later than today, 
+  //see http://mongoosejs.com/docs/api.html#model_Model.find
+  Set.find( 
+    {
+      'dateEvent':
+        {
+          $gte: new Date(),
+        }
+
+    }).sort('-dateEvent').exec(function(err, data){
+
+          // if err or no sets found, respond with error 
+        if(err || data == null){
+          var error = {status:'ERROR', message: 'Could not find sets'};
+          return res.json(error);
+        }
+
+        // otherwise, respond with the data 
+        var jsonData = {
+          status: 'OK',
+          sets: data
+        } 
+
+        //console.log("whateverrr");
+
+        res.json(jsonData);
+        // res.render('upcoming.html', jsonData);
+
+    })
 
 });
+
+
 
 
 
@@ -183,31 +143,7 @@ router.get('/api/get', function(req, res){
 
 router.get('/api/event/:id', function(req,res){
 
-res.render('event.html')
-
-// var requestedId = req.param('id');
-
-//   // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model.findById
-//   Set.findById(requestedId, function(err,data){
-
-//     // if err or no user found, respond with error 
-//     if(err || data == null){
-//       var error = {status:'ERROR', message: 'Could not find that set'};
-//        return res.json(error);
-//     }
-
-//     // otherwise respond with JSON data of the set
-//     var jsonData = {
-//       status: 'OK',
-//       set: data
-//     }
-
-//     console.log("hit");
-
-//     //return res.json(jsonData);
-//     return res.render('event.html',jsonData);
-  
-//   })
+  res.render('event.html')
 
 })  
 
@@ -224,7 +160,7 @@ res.render('event.html')
 //  * Receives a GET request specifying the set to get
 //  * @param  {String} req.param('id'). The setId
 //  * @return {Object} JSON
-//  */
+//  
 
 router.get('/api/get/:id', function(req, res){
 
@@ -250,6 +186,7 @@ router.get('/api/get/:id', function(req, res){
    return res.json(jsonData);
   
   })
+
 });
 
 
@@ -262,7 +199,6 @@ router.get('/api/get/:id', function(req, res){
   Default add new event route. loads the form for adding a new Set (event).
  
  */
-
 
 
 router.get('/api/add', function(req,res){
@@ -455,25 +391,25 @@ router.post('/api/create', multipartMiddleware, function(req, res){
 
 
 
-function cleanFileName (filename) {
+// function cleanFileName (filename) {
 
-    // cleans and generates new filename for example userID=abc123 and filename="My Pet Dog.jpg"
-    // will return "abc123_my_pet_dog.jpg"
-    var fileParts = filename.split(".");
+//     // cleans and generates new filename for example userID=abc123 and filename="My Pet Dog.jpg"
+//     // will return "abc123_my_pet_dog.jpg"
+//     var fileParts = filename.split(".");
 
-    //get the file extension
-    var fileExtension = fileParts[fileParts.length-1]; //get last part of file
+//     //get the file extension
+//     var fileExtension = fileParts[fileParts.length-1]; //get last part of file
 
-    //add time string to make filename a little more random
-    d = new Date();
-    timeStr = d.getTime();
+//     //add time string to make filename a little more random
+//     d = new Date();
+//     timeStr = d.getTime();
 
-    //name without extension
-    newFileName = fileParts[0];
+//     //name without extension
+//     newFileName = fileParts[0];
 
-    return newFilename = timeStr + "_" + fileParts[0].toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_') + "." + fileExtension;
+//     return newFilename = timeStr + "_" + fileParts[0].toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_') + "." + fileExtension;
 
-}
+// }
 
 
 

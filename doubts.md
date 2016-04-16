@@ -1,4 +1,11 @@
 
+DOUBTS:
+
+	Difference between router.get and app.get??
+
+	How can I use two different layouts?
+
+
 NEXT STEPS:
 
 Dates:
@@ -25,3 +32,4 @@ heroku-cli: Installing core plugins... done
  	5) Vote sets by preference
 
  	
+

@@ -8,8 +8,7 @@ function init() {
 	soundcloudSDK();
 	getSoundcloudDetails();	
  }
-
-
+ 
 
 // FEED & PLAYER //
 //Let's pull the data MongoDB
@@ -34,6 +33,9 @@ function pullData(){
 	           	//console.log("Esse é o index");
 	           	//console.log(i);
 	           	renderEvents(sets[currentSet]);
+	           	renderDateTitle(sets[currentSet]);
+	           	renderNextFour(sets[currentSet]);
+
 	           	currentSet++;
 	        }
 
@@ -49,23 +51,61 @@ function pullData(){
 
 
 
+function renderDateTitle(currentSet){
+
+	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd D MMM');
+
+		var dateTitleToAdd = 
+				'<div class="col-md-3">'+
+					'<div id="dateTitle" class="thumbnail">'+ dateTitle + '</div>' +
+				'</div>';
+
+
+	jQuery("#dateTitle-holder").append(dateTitleToAdd);
+
+
+}
+
 
 //RENDER EVENTS //
 function renderEvents(currentSet){
 
-	console.log('Render Events')
-	//console.log(currentSet);
-
-				var htmlToAdd = 
+				var thumbToAdd = 
 				'<div class="col-md-3">'+
-				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-				'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-		        '<p><b><a href="api/event/'+currentSet._id+'">' + currentSet.title + '</a></b></p>' +
-		        '<p>Date: ' + currentSet.dateEvent +' </p>' +
-		        '<p>Line Up: ' + currentSet.lineup.artist+
+					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
 				'</div>';
-			
-				jQuery("#events-holder").append(htmlToAdd);
+
+				jQuery("#events-holder").append(thumbToAdd);
+
+
+				$("#bigplay"+currentSet.index).click(function(){
+  					console.log('clicked!');
+  					loadMixgogoPlayer(currentSet);
+  				});	 
+
+}
+
+
+
+
+//RENDER NEXT 5 EVENTS //
+function renderNextFour(currentSet){
+
+	console.log('Render Next 4 Events');
+
+				var thumbToAdd = 
+				'<div class="col-md-3">'+
+					'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
+					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+				'</div>';
+
+				jQuery("#nextFour-holder").append(thumbToAdd);
 
 
 				$("#bigplay"+currentSet.index).click(function(){
@@ -79,37 +119,10 @@ function renderEvents(currentSet){
 
 
 
-//RENDER WEEK NAVIGATION //
+//WEEK NAVIGATION //
 
 
-
-// function pullDays(){
-
-// 	for(var i = dayCounter; i < week; i++){
-// 		var now = moment();
-// 		var format = 'ddd, D, MMM';
-// 		var result = moment(now).add(i, 'day').format(format);
-// 		renderDays(result);
-// 		dayCounter++;
-// 	}
-
-// function renderDays(dayCounter){
-
-// 	var htmlToAdd = '<div class="col-md-7">'+dayCounter+'</div>';
-
-// 	jQuery("#day-holder").append(htmlToAdd);
-
-// }
-
-
-
-// var dayCounter = 0;
-//var week = 7;
-
-
-
-
-// CALENDAR : Pull dates based on today
+// WEEK 1st STEP : Pull dates based on today
 
 function pullDays(){
 			
@@ -124,44 +137,22 @@ function pullDays(){
 
 			console.log('This is the CurentDay being passed -->');
 			console.log(currentDay);
-
-
-
-			//Old version
-
-			// for(var i = dayCounter; i < week.length; i++){
-			// 	var now = moment();
-			// 	var format = 'ddd, D, MMM';
-			// 	var result = moment(now).add(i, 'day').format(format);
-			// 	dayCounter++;
-
-			// 	console.log('Result is --->');
-			// 	console.log(result);
-				
-			// }
-
-
-			// var htmlToAdd = '<button type="button" class="btn btn-default btn-calendar" id="day-holder">'+result+'</button></div>';
-
-			// jQuery("#dates-holder").append(htmlToAdd);
-
-
 }
 
 
 
-//CALENDAR: Now fill in the other days of the week
+
+//WEEK 2nd STEP: Now fill in the other days of the week
 
 function renderWeek(currentDay){
 
-			console.log('inside render week');
-
+			// console.log('inside render week');
 			var now = moment();
-			var format = 'ddd, D, MMM';
+			var format = 'ddd <br> D <br> MMM';
 			var result = moment(now).add(currentDay, 'day').format(format);
 			//dayCounter++;
 
-			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-default btn-lg" id="day-holder">'+result+'</button></div>';
+			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-default" id="day-holder">'+result+'</button></div>';
 
 			jQuery("#dates-holder").append(htmlToAdd);
 
@@ -170,11 +161,11 @@ function renderWeek(currentDay){
 
 
 	
-//CALENDAR: move days forwad and backwards at week toolbar
+//WEEK 3rd STEP: move days forwad and backwards at week toolbar
 
 $("#next-week").click(function(){
 		pullDays();
-		console.log('Moved to Next Week');
+		// console.log('Moved to Next Week');
 	});
 
 
@@ -199,11 +190,6 @@ function soundcloudSDK(){
 			// 		console.log("This is E --->" +  e);
 			// 	}
 	});
-
-
-
-
-
 }
     
 
@@ -309,7 +295,7 @@ function playNow (currentSet){
 // EVENT PAGE //
 function renderEvent(){
 
-	console.log("inside the Render event function");
+	// console.log("inside the Render event function");
 
 
 	var urlArray = window.location.href.split('/');
@@ -356,7 +342,7 @@ function deleteEvent(setId){
 	//var targetedId = event.target.id;
 	//console.log('the event to delete is ' + targetedId);
 
-	Console.log("inside the delete event function")
+	// Console.log("inside the delete event function")
 
 
 	// now, let's call the delete route with AJAX
