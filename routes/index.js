@@ -103,7 +103,7 @@ router.get('/api/get', function(req, res){
           $gte: new Date(),
         }
 
-    }).sort('-dateEvent').exec(function(err, data){
+    }).sort('dateEvent').exec(function(err, data){
 
           // if err or no sets found, respond with error 
         if(err || data == null){
@@ -121,6 +121,11 @@ router.get('/api/get', function(req, res){
 
         res.json(jsonData);
         // res.render('upcoming.html', jsonData);
+
+        console.log('THis is the JSON DATA >');
+
+        console.log(jsonData);
+
 
     })
 
@@ -391,25 +396,25 @@ router.post('/api/create', multipartMiddleware, function(req, res){
 
 
 
-// function cleanFileName (filename) {
+function cleanFileName (filename) {
 
-//     // cleans and generates new filename for example userID=abc123 and filename="My Pet Dog.jpg"
-//     // will return "abc123_my_pet_dog.jpg"
-//     var fileParts = filename.split(".");
+    // cleans and generates new filename for example userID=abc123 and filename="My Pet Dog.jpg"
+    // will return "abc123_my_pet_dog.jpg"
+    var fileParts = filename.split(".");
 
-//     //get the file extension
-//     var fileExtension = fileParts[fileParts.length-1]; //get last part of file
+    //get the file extension
+    var fileExtension = fileParts[fileParts.length-1]; //get last part of file
 
-//     //add time string to make filename a little more random
-//     d = new Date();
-//     timeStr = d.getTime();
+    //add time string to make filename a little more random
+    d = new Date();
+    timeStr = d.getTime();
 
-//     //name without extension
-//     newFileName = fileParts[0];
+    //name without extension
+    newFileName = fileParts[0];
 
-//     return newFilename = timeStr + "_" + fileParts[0].toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_') + "." + fileExtension;
+    return newFilename = timeStr + "_" + fileParts[0].toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_') + "." + fileExtension;
 
-// }
+}
 
 
 

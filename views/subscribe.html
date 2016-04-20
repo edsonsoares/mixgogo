@@ -1,188 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
- <head>
 
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>{{pageTitle}}</title>
+	<body class="home"> 
 
-	<!-- Viewport -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<!-- Bootstrap -->
-	<!-- <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
+	<header class="bgheader">
 
-	<!-- Google Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Lato:400,300,100' rel='stylesheet' type='text/css'>
+		<div class="container-fluid">
+					
+			<div class="row">
 
-	<!-- Custom CSS -->
-	 <link rel="stylesheet" href="/css/custom.css" type="text/css">
-
-	 
- </head>
-
-<body class="home"> 
-
-<header class="bgheader">
-
-	<div class="container-fluid">
-				
-		<div class="row" id="subscribe">
-
-			
-			<div class="col-md-9 center-block">
-
-				<div class="row" id="iconBig">
+				<div class="col-md-12 pull-left" id="iconBig">
 					<img src="/img/site/logo_medium.png">
 				</div>
 
+			</div>
 
-				<div class="row" id="sloganShort">
+			<div class="row text-uppercase"  id="sloganShort">
+				
+				<div class="col-md-4 pull-right">
 					<h1 class="thin" style="float:left">Listen</h1><h1>before you go</h1>
 				</div>
 
-				<div class="row" id="sloganLong">
-					<p><h2>Preview the music playing at <br> events and venues,
+				
+			</div>
+
+
+			<div class="row" id="sloganLong">
+
+				<div class="col-md-5 pull-right">
+					<h1>Preview the music playing at <br> events and venues,
 						and go right.
-					</h2></p>
+					</h1>
 				</div>
 
-			</div> 
-
-			<div class="col-md-3">
-			</div> 
-
-		</div>
-
-	
-	</div>
-
-
-</header>	
-		
-	
-
-<div class="container" id="preview">
-
-	<div class="row">
-
-		<div class="col-md-6">
-			<h3>Upcoming events happening in</h3>
-		</div>
-
-
-		<div class="col-md-6 dropdown">
-		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">New York
-		  <span class="caret"></span></button>
-		</div>
-
-		<!-- <a href="upcoming" class="btn btn-default btn-lg btn-block">New York</a>-->
-	</div>
-
-		<div class="row">
-
-			<div id="nextFour-holder">
 			</div>
 
-		<!-- events-holder div brings up the embeded code from render event function -->
-
+		
 		</div>
 
-</div>
 
+	</header>	
+			
+		
 
-
-
-
-
-
-
-<header class="bgpromoter">
-
-<div class="container" id="promoters">
-
+	<div class="container" id="preview">
 
 		<div class="row">
 
 			<div class="col-md-6">
-				<h3>[Here goes image for promoters]</h3>
+				<h3>Upcoming events happening in</h3>
 			</div>
 
 
-			<div class="col-md-6">
-				<p><h1>Make parties? Run a music venue? </h1>
-					<h2>Broadcast the soundtrack of your space on Mixgogo and grow your crowd</h2>
-				</p>
+			<div class="col-md-6 dropdown">
+			  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">New York
+			  <span class="caret"></span></button>
 			</div>
 
- 		</div>
-
-</div>
-
-</header>	
-		
-
-
-
-
-
-<!-- PLAYER
-
-
-	<div class="container-fluid" id="player">
-
-		<div class="row">
-
-			<div class="col-md-1" id="nav-sets-left">
-				<img src="/img/event_previous.png">
-			</div>
-
-			<div  class="col-md-1" id="art-work">
-			</div>
-
-			<div  class="col-md-3" id="set-info"></div>
-
-			<div class="col-md-2" id="nav-tracks">
-				<img src="/img/player_previous.png">
-				<img src="/img/player_play.png">
-				<img src="/img/player_next.png">
-			</div>
-
-			<div class="col-md-3" id="wave-form">
-			</div>
-
-			<div class="col-md-1" id="nav-sets-right">
-				<img src="/img/event_next.png">
-			</div>
-
+			<!-- <a href="upcoming" class="btn btn-default btn-lg btn-block">New York</a>-->
 		</div>
 
+			<div class="row">
 
-	</div>-->
+				<div id="nextFour-holder">
+				</div>
 
+			<!-- events-holder div brings up the embeded code from render event function -->
 
+			</div>
 
-
-
-</body>
-
-
-<!-- Soundcloud SDK script -->
-
-<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
-
-<!-- Google Fonts script-->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-
-<!-- OUR JS -->
-<script src="js/main.js"></script>
+	</div>
 
 
 
-</html>
+		<header class="bgpromoter">
+
+			<div class="container" id="promoters">
+
+
+					<div class="row">
+
+						<div class="col-md-6">
+							<h3>[Here goes image for promoters]</h3>
+						</div>
+
+
+						<div class="col-md-6">
+							<p><h1>Make parties? Run a music venue? </h1>
+								<h2>Broadcast the soundtrack of your space on Mixgogo and grow your crowd</h2>
+							</p>
+						</div>
+
+			 		</div>
+
+			</div>
+
+		</header>	
+				
+
+
+	</body>
+
+	<script>initSubscribe()</script>

@@ -6,8 +6,13 @@ var empty = true;
 function init() {
 	pullData();
 	soundcloudSDK();
-	getSoundcloudDetails();	
- }
+}
+
+
+function initEvent(){
+	soundcloudSDK();
+	renderEvent();
+}
  
 
 // FEED & PLAYER //
@@ -32,61 +37,205 @@ function pullData(){
 				sets[currentSet].index = currentSet;
 	           	//console.log("Esse é o index");
 	           	//console.log(i);
-	           	renderEvents(sets[currentSet]);
-	           	renderDateTitle(sets[currentSet]);
-	           	renderNextFour(sets[currentSet]);
 
-	           	currentSet++;
+
+				renderCards(sets[currentSet]);
+	           	//renderDateTitle(sets[currentSet]);
+	           	currentSet++;  	
+
+
+		           	// if (i < 4) {
+		           	// 	renderNextFour(sets[currentSet]);
+		           	// }	         
+
 	        }
-
-
 		}
 	});
 
-	renderEvent();
-	//renderWeek();
 	pullDays();
 	
 }
 
 
 
-function renderDateTitle(currentSet){
 
-	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd D MMM');
 
-		var dateTitleToAdd = 
-				'<div class="col-md-3">'+
-					'<div id="dateTitle" class="thumbnail">'+ dateTitle + '</div>' +
+//create an category/object of a date
+var aDay = {}
+
+function renderCards(currentSet){
+
+	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
+
+	var dateTitleToAdd = 
+				'<div class="col-md-3 col-sm-6 card-container">'+
+					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
 				'</div>';
 
 
-	jQuery("#dateTitle-holder").append(dateTitleToAdd);
 
+	//If there is no Date Title for one specific day, create it
+	if (!aDay[dateTitle]){
+		//initialize category
+		aDay[dateTitle] = {};
+		//include an array of Sets
+		aDay[dateTitle].sets = [];
+		//include an array of thumbnails
+		aDay[dateTitle].thumbnails = [];
+		
+		//Atribute this object to a div
+		var card = aDay[dateTitle].aDayContainer 
 
-}
+		card = document.createElement('div');
 
+		$('#sets-container').append(card);
 
-//RENDER EVENTS //
-function renderEvents(currentSet){
+		$(card).append(dateTitleToAdd);
 
-				var thumbToAdd = 
-				'<div class="col-md-3">'+
+	}
+
+	//Add the current set to the array of Sets inside the aDay object
+	aDay[dateTitle].sets.push(currentSet);
+
+	//Append the container Date Title to the div recently created
+
+	var thumbToAdd =  
+				'<div class="col-md-3 col-sm-6 card-container">'+
 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
 			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
 			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
 				'</div>';
+				
+				aDay[dateTitle].thumbnails.push(thumbToAdd);
 
-				jQuery("#events-holder").append(thumbToAdd);
+				$(card).append(thumbToAdd);
 
 
 				$("#bigplay"+currentSet.index).click(function(){
   					console.log('clicked!');
   					loadMixgogoPlayer(currentSet);
-  				});	 
+  				});
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //create an category/object of a date
+// var aDay = {}
+
+// function renderDateTitle(currentSet){
+
+// 	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
+
+// 	var dateTitleToAdd = document.createElement('div');
+
+// 		var html = 
+// 				'<div class="col-md-3">'+
+// 					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
+// 				'</div>';
+
+// 	$(dateTitleToAdd).html(html)
+
+
+
+// 	//If there is no Date Title for one specific day, create it
+// 	if (!aDay[dateTitle]){
+// 		//initialize category
+// 		aDay[dateTitle] = {};
+// 		//include an array of Sets
+// 		aDay[dateTitle].sets = [];
+// 		//include an array of thumbnails
+// 		aDay[dateTitle].thumbnails = [];
+// 		//Atribute this object to a div
+// 		aDay[dateTitle].aDayContainer = document.createElement('div');
+
+// 		$('#cards-holder').append(aDay[dateTitle].aDayContainer);
+
+// 		$(aDay[dateTitle].aDayContainer).append(dateTitleToAdd);
+
+// 		//Gennerate an ID For this item
+// 		$(dateTitleToAdd).attr('id', dateTitle + 'title' + aDay[dateTitle].sets.length);
+// 	}
+
+// 	//Add the current set to the array of Sets inside the aDay object
+// 	aDay[dateTitle].sets.push(currentSet);
+
+// 	//Append the container Date Title to the div recently created
+
+
+// 	renderEvents(currentSet, dateTitle);
+
+// }
+
+
+
+
+// //RENDER EVENTS //
+// function renderEvents(currentSet, dateTitle){
+
+// 	var thumbToAdd = document.createElement('div');
+
+// 				var html = 
+// 				'<div class="col-md-3">'+
+// 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+// 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+// 			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+// 			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+// 				'</div>';
+				
+
+// 				$(thumbToAdd).html(html);
+
+// 				// console.log(currentSet);
+
+// 				// console.log( $("#bigplay"+currentSet.index) );
+
+// 				// setTimeout(function() {
+// 				// 	$("#bigplay"+currentSet.index).click(function(){
+// 	  	// 				console.log('clicked!');
+// 	  	// 				loadMixgogoPlayer(currentSet);
+// 	  	// 			});
+// 				// }, 1);
+
+
+
+			
+
+				
+// 				aDay[dateTitle].thumbnails.push(thumbToAdd);
+
+// 				$(aDay[dateTitle].aDayContainer).append(thumbToAdd);
+
+// 				$("#bigplay"+currentSet.index).click(function(){
+//   					console.log('clicked!');
+//   					loadMixgogoPlayer(currentSet);
+//   				});
+
+// 				//Generate an id for this item
+//   				$(thumbToAdd).attr('id', dateTitle + 'thumbnail' + aDay[dateTitle].thumbnails.length);
+			
+// }
 
 
 
@@ -120,8 +269,6 @@ function renderNextFour(currentSet){
 
 
 //WEEK NAVIGATION //
-
-
 // WEEK 1st STEP : Pull dates based on today
 
 function pullDays(){
@@ -131,22 +278,23 @@ function pullDays(){
 
 			for(var i = 0; i < week.length; i++){
 				week[currentDay].index = currentDay;
-				renderWeek(week[currentDay]);
 				currentDay++;
+				renderWeek(week[currentDay]);
+
 			}
 
 			console.log('This is the CurentDay being passed -->');
 			console.log(currentDay);
+
 }
 
 
 
 
 //WEEK 2nd STEP: Now fill in the other days of the week
-
 function renderWeek(currentDay){
 
-			// console.log('inside render week');
+			console.log('inside render week');
 			var now = moment();
 			var format = 'ddd <br> D <br> MMM';
 			var result = moment(now).add(currentDay, 'day').format(format);
@@ -180,16 +328,6 @@ function soundcloudSDK(){
     	client_id: "95761a6a9b70583b71e0f8436edc8db3",
     	redirect_uri: "http://localhost:3000/callback.html",
   	});
-
-	SC.connect({
-
-			// 'connect': function(e)
-			// 	{
-			// 		console.log("Im inside connect");
-
-			// 		console.log("This is E --->" +  e);
-			// 	}
-	});
 }
     
 
@@ -296,8 +434,6 @@ function playNow (currentSet){
 function renderEvent(){
 
 	// console.log("inside the Render event function");
-
-
 	var urlArray = window.location.href.split('/');
 	var id = urlArray[urlArray.length-1];
 
