@@ -1,0 +1,45 @@
+<header>
+	{{> header}}
+</header>
+
+
+<div class="container-fluid" id="content-container">
+	
+	<div class="row">
+	
+		<div id="flyer">
+
+
+			{{#set}}
+
+			<div class="col-md-4">
+				<img src="{{artcover}}" class="img-responsive">				
+			</div>
+
+
+			<div class="col-md-8">
+
+				{{title}}
+				{{lineup.artist}}
+				{{lineup.soundcloudUrl}}
+
+				<a href="../edit/{{id}}" class="btn btn-default btn-lg btn-block">Edit</a>
+
+			</div>
+
+		
+			{{/set}}
+
+		
+		</div>
+
+
+	</div>
+
+	
+</div>
+
+{{> player}}
+
+
+<script>initEvent()</script>

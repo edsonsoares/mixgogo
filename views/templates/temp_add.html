@@ -1,0 +1,199 @@
+
+<div class="container" id="content-container">
+
+  <div class="row col-md-12">
+      <h1>New Event</h1>
+  </div>
+
+ <form method="post" action="/api/create" id="addForm" enctype="multipart/form-data">
+
+  <!-- TITLE, ART, TAGS -->
+
+  <div class="row form-group">
+
+      <div class="col-md-3">
+        <label for="artcover">Art cover</label>
+        <input class="btn btn-default form-control input-lg" type="file" name="artcover" id="artcover" value="Select a Photo">
+      </div>
+
+      <div class="col-md-9">
+        <label for="title">Title</label>
+        <input type="text" class="form-control input-lg" id="title" placeholder="Event Name" name="title">
+
+        <label for="tags">Tags</label>
+        <textarea rows="3" cols="50" class="form-control input-lg" id="tags" placeholder="tags separated by commas" name="tags"></textarea>
+      </div>
+
+  </div>
+
+  <!-- ARTISTS / SOUNDCLOUD-->
+
+<fieldset><legend>Line Up</legend>
+  
+  <div class="row form-group">
+
+    <div class="col-md-3">
+      <label for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist">
+
+
+     <!--  <label for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist0">
+
+      <label class="sr-only" for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist1">
+
+      <label class="sr-only" for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist2">
+
+      <label class="sr-only" for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist3">
+
+      <label class="sr-only" for="artist">Artist</label>
+      <input type="text" class="form-control input-lg" placeholder="Artist" name="artist4"> -->
+    </div>
+
+
+    <div class="col-md-9">
+
+      <label for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg"  name="soundcloudUrl" placeholder="Paste soundcloud URL of artist's recent track" >
+      <!-- 
+      <label for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg"  name="soundcloudUrl0" placeholder="Paste soundcloud URL of artist's recent track" >
+    
+      <label class="sr-only" for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg" name="soundcloudUrl1" placeholder="Paste soundcloud URL of artist's recent track" >
+
+      <label class="sr-only" for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg" name="soundcloudUrl2" placeholder="Paste soundcloud URL of artist's recent track" >
+          <label class="sr-only" for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg" name="soundcloudUrl3" placeholder="Paste soundcloud URL of artist's recent track" >
+
+      <label class="sr-only" for="soundcloudUrl">Soundcloud Url</label>
+      <input type="text" class="form-control input-lg" name="soundcloudUrl4" placeholder="Paste soundcloud URL of artist's recent track" > -->
+    </div>     
+  
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button id="addsound" class="btn btn-default pull-right btn-lg">Add new attraction</button>
+    </div>
+  </div>
+
+</fieldset>
+
+  <!-- SERVICE -->
+
+<!--   <div class="row col-md-12">
+      <h2>Service</h2>
+  </div> -->
+ 
+<fieldset><legend>Service</legend>
+
+
+  <!-- PRICE -->
+  <div class="row" id="price">
+  
+    <div class="col-md-3 form-group">
+        <div class="row form-group"> 
+          <div class="col-md-6 form-group">
+            <label for="minPrice">From</label><br>
+            <input type="text" class="form-control input-lg" id="minPrice" placeholder="minPrice" name="minPrice">
+          </div>
+          
+          <div class="col-md-6 form-group">
+            <label for="maxPrice">To</label><br>
+            <input type="text" class="form-control input-lg" id="maxPrice" placeholder="maxPrice" name="maxPrice">
+            
+            <div class="checkbox">
+              <input type="checkbox" name="isfree" value="isfree">Free<br>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-9 form-group">
+      <label for="buyUrl">Buy</label>
+      <input type="text" class="form-control input-lg" id="buyUrl" placeholder="Link to buy ticket" name="buyUrl">
+    </div>
+
+  </div>
+  
+  <!-- ADDRESS & DESCRIPT -->
+
+  <div class="row" id="coordinates">
+      
+      <div class="col-md-3">
+
+        <div class="row form-group">
+          <div class="col-md-12">
+            <label for="dateEvent">Date</label>
+            <input type="date"  class="form-control input-lg" id="dateEvent" placeholder="date" name="dateEvent">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label for="startTime">Start time</label>
+            <input type="text" class="form-control input-lg" id="startTime" placeholder="Starts at" name="startTime">
+          </div>
+    
+          <div class="col-md-6">
+            <label for="endTime">End time</label>
+            <input type="text" class="form-control input-lg" id="endTime" placeholder="Finishes at" name="endTime">
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="col-md-9">   
+        <div class="row form-group">
+           <div class="col-md-12"> 
+            <label for="address">Address</label>
+            <input type="text" class="form-control input-lg" id="address" placeholder="start typing the address" name="address">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label for="zip">Zip</label>
+            <input type="text" class="form-control input-lg" id="zip" placeholder="zip" name="zip">
+          </div>
+          <div class="col-md-6">
+            <label for="city">City</label>
+            <input type="text" class="form-control input-lg" id="city" placeholder="city" name="city">
+          </div>
+        </div>
+
+      </div>
+
+  </div>
+  
+  <div class="row" id="descrip">
+      <div class="col-md-3"></div>
+
+      <div class="col-md-9 form-group">
+          <label for="description">Description</label>
+          <textarea rows="4" cols="50" class="form-control input-lg" id="description" placeholder="Tell the story of this event" name="description"></textarea>
+      </div>
+  </div>
+
+  <div class="row" id="submit">
+    <div class="col-md-7"></div>
+    <div class="col-md-5">
+      <button type="submit" class="btn btn-primary btn-block pull-right btn-lg">Submit</button>
+    </div>
+  </div>
+
+</fieldset>
+
+</form> 
+
+</div>
+
+
+  

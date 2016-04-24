@@ -13,6 +13,10 @@ function initEvent(){
 	soundcloudSDK();
 	renderEvent();
 }
+
+function initSubscribe() {
+	//call other functions
+}
  
 
 // FEED & PLAYER //
@@ -103,8 +107,8 @@ function renderCards(currentSet){
 				'<div class="col-md-3 col-sm-6 card-container">'+
 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+			         '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
 				'</div>';
 				
 				aDay[dateTitle].thumbnails.push(thumbToAdd);
@@ -240,29 +244,29 @@ function renderCards(currentSet){
 
 
 
-//RENDER NEXT 5 EVENTS //
-function renderNextFour(currentSet){
+// //RENDER NEXT 5 EVENTS //
+// function renderNextFour(currentSet){
 
-	console.log('Render Next 4 Events');
+// 	console.log('Render Next 4 Events');
 
-				var thumbToAdd = 
-				'<div class="col-md-3">'+
-					'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
-					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-				'</div>';
+// 				var thumbToAdd = 
+// 				'<div class="col-md-3">'+
+// 					'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
+// 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+// 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+// 			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+// 			        // '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+// 				'</div>';
 
-				jQuery("#nextFour-holder").append(thumbToAdd);
+// 				jQuery("#nextFour-holder").append(thumbToAdd);
 
 
-				$("#bigplay"+currentSet.index).click(function(){
-  					console.log('clicked!');
-  					loadMixgogoPlayer(currentSet);
-  				});	 
+// 				$("#bigplay"+currentSet.index).click(function(){
+//   					console.log('clicked!');
+//   					loadMixgogoPlayer(currentSet);
+//   				});	 
 
-}
+// }
 
 
 
@@ -299,11 +303,9 @@ function renderWeek(currentDay){
 			var format = 'ddd <br> D <br> MMM';
 			var result = moment(now).add(currentDay, 'day').format(format);
 			//dayCounter++;
-
-			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-default" id="day-holder">'+result+'</button></div>';
+			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-sm" id="day-holder">'+result+'</button></div>';
 
 			jQuery("#dates-holder").append(htmlToAdd);
-
 }
 
 
@@ -391,13 +393,14 @@ function loadMixgogoPlayer(currentSet){
 				// //return $('#nav-sets').append(setsNav);
 				// $('#set-info').append(setsInfo);
 
-				// var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-				// $('#wave-form').append(waveForm);
+				var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
+				$('#wave-form').append(waveForm);
 
 
-		console.log("turned into a empty");
-
+		console.log("WAVEFORM");
+		console.log(currentSet.waveform);
 	}
+
 
 	playNow(currentSet);
 
@@ -412,8 +415,6 @@ function playNow (currentSet){
 		// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
 		var track_url = currentSet.lineup.soundcloudUrl;
 		
-	
-
 		// With ajax we use the soundcloudUrl to access the tracks' JSON file, and find its id
 		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
 			  	console.log("THIS IS THE RESULT ---->"+result);
@@ -498,4 +499,17 @@ function deleteEvent(setId){
 }
 
 
-window.addEventListener("DOMContentLoaded", init());
+
+
+
+
+
+// CREATE NEW EVENT PAGE
+
+function addAttraction(){
+		
+}
+
+
+
+//window.addEventListener("DOMContentLoaded", init());

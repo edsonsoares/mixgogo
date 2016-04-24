@@ -1,6 +1,13 @@
 
 DOUBTS:
 
+	
+
+	- Why am I calling functions that are not listed in the initEvent() when loading the event page
+
+	- Now that I am separating the logc from the data, should I do everything that I was doing in main.js in index.js(routes).
+
+
 	Difference between router.get and app.get??
 
 	How can I use two different layouts?

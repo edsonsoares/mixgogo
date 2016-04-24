@@ -1,3 +1,7 @@
+// THIS I THE AP SETUP
+
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,6 +11,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var env = require('node-env-file');
 var moment = require('moment');
+var favicon = require('serve-favicon');
 
 
 
@@ -24,8 +29,21 @@ app.db = mongoose.connect(process.env.MONGOLAB_URI);
 // https://github.com/vol4ok/hogan-express
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
-app.set('layout','layout');
+//app.set('layout','layout');
+app.set('partials', {header: "partials/header", head:"partials/head", jsdefaults:"partials/jsdefaults", week:"partials/week", player:"partials/player"});
 app.engine('html', require('hogan-express'));;
+
+//app.set('view engine', 'hjs');
+
+
+
+// Decided to use EJS also, besides hogan-express
+// Because is easier to create templates/partials
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname +'/views');
+
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -34,6 +52,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// uncomment after placing your favicon in /public
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // our routes will be contained in routes/index.js
 var routes = require('./routes/index');

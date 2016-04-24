@@ -1,3 +1,4 @@
+// THIS I THE ROUTES
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -24,26 +25,10 @@ var multipartMiddleware = multipart();
 
 
 
-/**  NOT WORKING - TRYING TO GET THE FIRST 5 EVENTS
- * GET '/'
- * Default home route. Just relays a success message back.
- * @param  {Object} req
- * @return {Object} json
-//  */
-
 
 
 router.get('/', function(req, res) {
 
-  res.render('subscribe.html',{layout: 'noplayer-layout'})
-
-});
-
-
-router.get('/', function(req, res) {
-  
-  // mongoose method to find sets from events happening later than today, 
-  //see http://mongoosejs.com/docs/api.html#model_Model.find
   Set.find( 
     {
       'dateEvent':
@@ -52,35 +37,29 @@ router.get('/', function(req, res) {
         }
 
     }).sort('-dateEvent').limit(4).exec(function(err, data){
-
           // if err or no sets found, respond with error 
         if(err || data == null){
           var error = {status:'ERROR', message: 'Could not find sets'};
           return res.json(error);
-        }
-
-        // otherwise, respond with the data 
-        var jsonData = {
+        }else{
+          console.log(data),
+          res.render('templates/temp_subscribe.html',{
+          layout: 'noplayer-layout',
           status: 'OK',
+          pageTitle: 'Mixgogo',
           sets: data
-        } 
-
-        //console.log("whateverrr");
-
-        res.json(jsonData);
-        
-    })    
-  
+          }
+        );
+      }
+  })
 });
 
 
 
 
 
-
-
 router.get('/upcoming', function(req,res){
-  res.render('upcoming.html')
+  res.render('templates/temp_upcoming.html', {layout:'layout'})
 })  
 
 
@@ -117,43 +96,11 @@ router.get('/api/get', function(req, res){
           sets: data
         } 
 
-        //console.log("whateverrr");
-
         res.json(jsonData);
         // res.render('upcoming.html', jsonData);
-
-        console.log('THis is the JSON DATA >');
-
-        console.log(jsonData);
-
-
     })
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-// /** ____________________________________________________________________________
-
-
-
-router.get('/api/event/:id', function(req,res){
-
-  res.render('event.html')
-
-})  
-
-
-
 
 
 
@@ -165,8 +112,6 @@ router.get('/api/event/:id', function(req,res){
 //  * Receives a GET request specifying the set to get
 //  * @param  {String} req.param('id'). The setId
 //  * @return {Object} JSON
-//  
-
 router.get('/api/get/:id', function(req, res){
 
   var requestedId = req.param('id');
@@ -178,18 +123,16 @@ router.get('/api/get/:id', function(req, res){
     if(err || data == null){
       var error = {status:'ERROR', message: 'Could not find that set'};
        return res.json(error);
-    }
+    }else{
 
-    // DOUBT?? DO I need this??? var set = results[0]
-
-    // otherwise respond with JSON data of the set
-    var jsonData = {
-      status: 'OK',
-      set: data
-    }
-
-   return res.json(jsonData);
-  
+      console.log(data);
+        res.render('templates/temp_event.html', {
+        status: 'OK',
+        layout:'layout', 
+        set: data      
+        }
+      );
+    }  
   })
 
 });
@@ -210,7 +153,7 @@ router.get('/api/add', function(req,res){
 
   //console.log('got into the add set page');
 
-  res.render('add.html', {layout:"noplayer-layout"})
+  res.render('templates/temp_add.html', {layout:"noplayer-layout"})
 
  });
 
@@ -236,18 +179,12 @@ router.get('/api/edit/:id', function(req,res){
     }
 
 
-    return res.render('edit.html', viewData)
+    return res.render('templates/temp_edit.html', viewData)
     //return res.render('edit.html', {layout:"noplayer-layout"}, viewData)
 
   })
 
 })
-
-
-
-
-
-
 
 
 
@@ -266,11 +203,12 @@ router.post('/api/create', multipartMiddleware, function(req, res){
   //console.log('the incoming data >> ' + JSON.stringify(req.body));
   //console.log('the incoming image file >> ' + JSON.stringify(req.files.artcover));
 
+  console.log("BODY", req.body);
 
     // pull out the information from the req.body
     var title = req.body.title;
-    var artist = req.body.artist.split(",");
-    var soundcloudUrl = req.body.soundcloudUrl.split(",");
+    var artist = req.body.lineup.artist.split(',');
+    var soundcloudUrl = req.body.lineup.soundcloudUrl.split(',');
     var description = req.body.description;
     var isfree = req.body.isfree ? true : false;
     var minPrice = req.body.minPrice;
@@ -283,6 +221,11 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var zip = req.body.zip;
     var city = req.body.city;
 
+
+    // When trying to make artists an array of objects
+    // var artists = [];
+    // artists[0] = {name: req.body.artist0, url: req.body.soundcloudUrl0};
+
    //console.log("Example of Soundcloud URL --->" + soundcloudUrl);
 
 
@@ -291,10 +234,8 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var setObj = {
     
       title: title,
-      lineup: {
-        artist: artist,
-        soundcloudUrl: soundcloudUrl
-      },
+      artist: artist,
+      soundcloudUrl: soundcloudUrl,
       description: description,
       isfree: isfree,
       minPrice: minPrice,
@@ -357,6 +298,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
         set.save(function(err,data){
           // if err saving, respond back with error
           if (err){
+            console.log(err);
             var error = {status:'ERROR', message: 'Error saving set'};
             return res.json(error);
           } else {
@@ -374,7 +316,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
               //respond with rendering a page
               //res.render('event.html', jsonData);
 
-             res.render('event.html', jsonData);
+             res.render('templates/temp_event.html', jsonData);
 
              //console.log(set.id);
 
@@ -454,7 +396,6 @@ router.post('/api/edit/:id', function(req, res){
     maxPrice: req.body.maxPrice,
     buyUrl: req.body.buyUrl,
     artcover: req.body.artcover,
-
     dateEvent: req.body.dateEvent,
     startTime: req.body.startTime,
     endTime: req.body.endTime,

@@ -1,4 +1,5 @@
 
+
 body{
 	margin: 0;
 	background: -webkit-linear-gradient(bottom, #E4523B, #E4345C); /* For Safari 5.1 to 6.0 */
@@ -6,43 +7,81 @@ body{
     background: -moz-linear-gradient(top, #E4523B, #E4345C); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to top, #E4523B, #E4345C); /* Standard syntax (must be last) */
 	background-attachment:fixed;
+
+
+}
+
+/*.backgroundSpecial{
+	margin: 0;
+	background: -webkit-linear-gradient(bottom, #E4523B, #E4345C); 
+    background: -o-linear-gradient(top, #E4523B, #E4345C); 
+    background: -moz-linear-gradient(top, #E4523B, #E4345C); 
+    background: linear-gradient(to top, #E4523B, #E4345C); 
+	background-attachment:fixed;
+	z-index: -2;
+	opacity: 0.4;
+}*/
+
+.backgroundOrange{
+	background: #E4523B;
 }
 
 
 #iconBig{
-	padding: 50px;
+	padding-left: 240px;
+	padding-top: 50px;
 }
 
+
+#preview{
+	margin-top:300px;
+	padding-top:100px;
+    border-top: 1px solid #fff; 
+}
 
 
 .bgheader{
-	background: url(/img/site/background1.png) no-repeat; 
-	background-position: center top;
-	background-size: 100%;
-	height:800px;
+	background: url(/img/site/background_new1.png) no-repeat; 
+	background-position: center center;
+	background-size:cover;
+	height:1666px;
+	/*z-index: -2;*/
 }
+
+
+
 
 .bgpromoter{
-	background: url(/img/site/background2.png) no-repeat; 
+	/*background: url(/img/site/background2.png) no-repeat; */
 	background-position: center top;
 	background-size: 100%;
 	height:800px;
 }
 
 
+.btn-xlarge {
+	margin-top: 10px;
+    padding: 08px 18px;
+    font-size: 28px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
 
 .btn-player{
 	background: initial;
 	border: none;
 	border-radius: 0px;
+	height: 96px;
 }
 
 .btn-calendar{
 	background: none;
 	padding: 12px 22px;
 	width: 100px;
-	border: 2px solid #000000;
-	color: #000000;
+	border: 2px solid #fff;
+	color: #fff;
 	white-space:normal !important;
     word-wrap:break-word; 
 }
@@ -88,7 +127,14 @@ body{
 }
 
 #navbar-week{
-	padding-top: 27px;
+	padding: 0px;
+}
+
+.fixed {
+        position: fixed;
+}
+
+.scrollit {
 }
 
 /*
@@ -174,6 +220,8 @@ text-align: center;
 	top: 0px;
 	height: auto;
 	margin: 0 auto;
+	padding-left: 150px;
+	padding-right: 150px;
 	/*padding-top: 150px;*/
 }
 
@@ -181,8 +229,7 @@ text-align: center;
 
 
 #sets-container{
-	padding-left: 150px;
-	padding-right: 150px;
+
 /*	margin-top: 50px;
 */}
 
@@ -228,7 +275,8 @@ text-align: center;
 
 .bigplay{
 	position: absolute;
-	margin: auto;
+	margin: 0 auto;
+	margin-top: 120px;
     top: 0;
     left: 0;
     right: 0;
@@ -252,6 +300,33 @@ text-align: center;
 
 
 
+
+
+#flyer{
+	border: medium none;
+    box-shadow: none;
+    display: block;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+	width: 100%;
+    /*max-width: 360px;
+    */
+    min-height: 660px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+
+
+
+
+
+
+
+
 #player{
 	position: fixed;
 	z-index: 2;
@@ -265,6 +340,9 @@ text-align: center;
 
 }
 
+.player-btn{
+    height: 96px;
+}
 
 
 /*
@@ -437,3 +515,11 @@ a:active {    /* active link */
     color: #0000FF;
 }
 
+
+.white, .white a {
+  color: #fff;
+}
+
+.weekoffset { 
+	margin-top: -30px; 
+}
