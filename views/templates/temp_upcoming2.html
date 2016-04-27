@@ -1,0 +1,49 @@
+	<header>
+		{{> header}}
+	</header>
+
+<div class="container-fluid" id="content-container"><!-- This ID makes the lateral padding -->
+			
+	<div class="row">
+
+			
+			<div class="col-md-11 pull-left" id="sets-container">
+
+			
+			{{#sets}}
+
+			<div class="col-md-3">
+
+					<div id="artcover" class="thumbnail">
+
+						<img src="{{artcover}}">
+
+						<input type="image" src="/img/site/event_play.png" class="bigplay" id="{{_id}}" data-artist="{{lineup.artist}}" data-art="{{artcover}}" alt="Play">
+			        	
+			        	<div class="text-uppercase">
+			        		<a href="api/get/currentSet._id"><h2> {{title}}</h2></a>
+			        	</div>
+			        	
+			        	<div class="track-thumb">
+			        		<h2><small>{{lineup.artist}}</small></h2>
+			        	</div>
+
+					</div> 	
+
+			</div>
+
+			{{/sets}}
+
+
+			<div class="col-md-1 pull-right" id="navbar-week">
+				{{> week}}
+			</div>
+
+
+	</div>
+
+</div>	
+
+{{> player}}
+
+<!--<script>upcoming2()</script>-->

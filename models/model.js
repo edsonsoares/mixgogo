@@ -6,9 +6,10 @@ var Schema = mongoose.Schema;
 var setSchema = new Schema({
 	
 	title: String,
+	tags: [String],
 	lineup: {
-		artist: [String],
-		soundcloudUrl: [String]
+		soundcloudUrl: [String],
+		artist: [String]
 	},
 	description: String,
 	isfree: {type: Boolean, default: false},

@@ -15,9 +15,17 @@ function initEvent(){
 }
 
 function initSubscribe() {
-	//call other functions
+	//renderNextFour();
+	renderCopyright();
 }
  
+
+function initAdd() {
+	preventEnter();
+	googleMaps();
+}
+
+
 
 // FEED & PLAYER //
 //Let's pull the data MongoDB
@@ -30,8 +38,8 @@ function pullData(){
 		dataType : 'json',
 		success : function(response) {
 			
-			console.log('got data: ');
-			console.log(response);
+			// console.log('got data: ');
+			// console.log(response);
 			var sets = response.sets;
 			
 			// Pass out the index
@@ -41,17 +49,9 @@ function pullData(){
 				sets[currentSet].index = currentSet;
 	           	//console.log("Esse é o index");
 	           	//console.log(i);
-
-
-				renderCards(sets[currentSet]);
-	           	//renderDateTitle(sets[currentSet]);
+				// renderCards(sets[currentSet]);
+	           	renderDateTitle(sets[currentSet]);
 	           	currentSet++;  	
-
-
-		           	// if (i < 4) {
-		           	// 	renderNextFour(sets[currentSet]);
-		           	// }	         
-
 	        }
 		}
 	});
@@ -62,19 +62,23 @@ function pullData(){
 
 
 
-
-
 //create an category/object of a date
 var aDay = {}
 
-function renderCards(currentSet){
+function renderDateTitle(currentSet){
+
+	console.log('inside render date');
 
 	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
 
-	var dateTitleToAdd = 
-				'<div class="col-md-3 col-sm-6 card-container">'+
+	var dateTitleToAdd = document.createElement('div');
+
+		var html = 
+				'<div class="col-md-3">'+
 					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
 				'</div>';
+
+	$(dateTitleToAdd).html(html)
 
 
 
@@ -86,187 +90,138 @@ function renderCards(currentSet){
 		aDay[dateTitle].sets = [];
 		//include an array of thumbnails
 		aDay[dateTitle].thumbnails = [];
-		
 		//Atribute this object to a div
-		var card = aDay[dateTitle].aDayContainer 
+		aDay[dateTitle].aDayContainer = document.createElement('div');
 
-		card = document.createElement('div');
+		$('#sets-container').append(aDay[dateTitle].aDayContainer);
 
-		$('#sets-container').append(card);
+		$(aDay[dateTitle].aDayContainer).append(dateTitleToAdd);
 
-		$(card).append(dateTitleToAdd);
-
+		//Gennerate an ID For this item
+		$(dateTitleToAdd).attr('id', dateTitle + 'title' + aDay[dateTitle].sets.length);
 	}
 
 	//Add the current set to the array of Sets inside the aDay object
 	aDay[dateTitle].sets.push(currentSet);
 
 	//Append the container Date Title to the div recently created
-
-	var thumbToAdd =  
-				'<div class="col-md-3 col-sm-6 card-container">'+
-					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-			         '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-				'</div>';
-				
-				aDay[dateTitle].thumbnails.push(thumbToAdd);
-
-				$(card).append(thumbToAdd);
-
-
-				$("#bigplay"+currentSet.index).click(function(){
-  					console.log('clicked!');
-  					loadMixgogoPlayer(currentSet);
-  				});
-
+	renderEvents(currentSet, dateTitle);
 
 }
 
 
 
 
+//RENDER EVENTS //
+function renderEvents(currentSet, dateTitle){
 
+	console.log("inside render");
 
+	var thumbToAdd = document.createElement('div');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //create an category/object of a date
-// var aDay = {}
-
-// function renderDateTitle(currentSet){
-
-// 	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
-
-// 	var dateTitleToAdd = document.createElement('div');
-
-// 		var html = 
-// 				'<div class="col-md-3">'+
-// 					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
-// 				'</div>';
-
-// 	$(dateTitleToAdd).html(html)
-
-
-
-// 	//If there is no Date Title for one specific day, create it
-// 	if (!aDay[dateTitle]){
-// 		//initialize category
-// 		aDay[dateTitle] = {};
-// 		//include an array of Sets
-// 		aDay[dateTitle].sets = [];
-// 		//include an array of thumbnails
-// 		aDay[dateTitle].thumbnails = [];
-// 		//Atribute this object to a div
-// 		aDay[dateTitle].aDayContainer = document.createElement('div');
-
-// 		$('#cards-holder').append(aDay[dateTitle].aDayContainer);
-
-// 		$(aDay[dateTitle].aDayContainer).append(dateTitleToAdd);
-
-// 		//Gennerate an ID For this item
-// 		$(dateTitleToAdd).attr('id', dateTitle + 'title' + aDay[dateTitle].sets.length);
-// 	}
-
-// 	//Add the current set to the array of Sets inside the aDay object
-// 	aDay[dateTitle].sets.push(currentSet);
-
-// 	//Append the container Date Title to the div recently created
-
-
-// 	renderEvents(currentSet, dateTitle);
-
-// }
-
-
-
-
-// //RENDER EVENTS //
-// function renderEvents(currentSet, dateTitle){
-
-// 	var thumbToAdd = document.createElement('div');
-
-// 				var html = 
-// 				'<div class="col-md-3">'+
-// 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-// 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-// 			        '<p><div class="text-uppercase"><a href="api/event/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-// 			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-// 				'</div>';
+				var html = 
+				'<div class="col-md-3">'+
+					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+				'</div>';
 				
 
-// 				$(thumbToAdd).html(html);
+				$(thumbToAdd).html(html);
 
-// 				// console.log(currentSet);
+				// console.log(currentSet);
 
-// 				// console.log( $("#bigplay"+currentSet.index) );
+				// console.log( $("#bigplay"+currentSet.index) );
 
-// 				// setTimeout(function() {
-// 				// 	$("#bigplay"+currentSet.index).click(function(){
-// 	  	// 				console.log('clicked!');
-// 	  	// 				loadMixgogoPlayer(currentSet);
-// 	  	// 			});
-// 				// }, 1);
-
-
-
-			
+				// setTimeout(function() {
+				// 	$("#bigplay"+currentSet.index).click(function(){
+	  	// 				console.log('clicked!');
+	  	// 				loadMixgogoPlayer(currentSet);
+	  	// 			});
+				// }, 1);
 
 				
-// 				aDay[dateTitle].thumbnails.push(thumbToAdd);
+				aDay[dateTitle].thumbnails.push(thumbToAdd);
 
-// 				$(aDay[dateTitle].aDayContainer).append(thumbToAdd);
+				$(aDay[dateTitle].aDayContainer).append(thumbToAdd);
 
-// 				$("#bigplay"+currentSet.index).click(function(){
-//   					console.log('clicked!');
-//   					loadMixgogoPlayer(currentSet);
-//   				});
+				$("#bigplay"+currentSet.index).click(function(){
+  					console.log('clicked!');
+  					loadMixgogoPlayer(currentSet);
+  				});
 
-// 				//Generate an id for this item
-//   				$(thumbToAdd).attr('id', dateTitle + 'thumbnail' + aDay[dateTitle].thumbnails.length);
+				//Generate an id for this item
+  				$(thumbToAdd).attr('id', dateTitle + 'thumbnail' + aDay[dateTitle].thumbnails.length);
 			
-// }
+}
 
 
 
 
-// //RENDER NEXT 5 EVENTS //
-// function renderNextFour(currentSet){
+//RENDER NEXT 4 EVENTS //
+function renderNextFour(){
 
-// 	console.log('Render Next 4 Events');
+	// console.log('Render Next 4 Events');
 
-// 				var thumbToAdd = 
-// 				'<div class="col-md-3">'+
-// 					'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
-// 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-// 					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-// 			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-// 			        // '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-// 				'</div>';
+	// 			var thumbToAdd = 
+	// 			'<div class="col-md-3">'+
+	// 				'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
+	// 				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+	// 				'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+	// 		        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+	// 		        // '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+	// 			'</div>';
 
-// 				jQuery("#nextFour-holder").append(thumbToAdd);
+	// 			jQuery("#nextFour-holder").append(thumbToAdd);
 
 
-// 				$("#bigplay"+currentSet.index).click(function(){
-//   					console.log('clicked!');
-//   					loadMixgogoPlayer(currentSet);
-//   				});	 
+	// 			$("#bigplay"+currentSet.index).click(function(){
+ //  					console.log('clicked!');
+ //  					loadMixgogoPlayer(currentSet);
+ //  				});	 
 
-// }
+
+
+console.log('Pull next four data');
+
+	jQuery.ajax({
+		url : '/api/get/subscribe',
+		dataType : 'json',
+		success : function(response) {
+			
+			console.log('got next four data: ');
+			console.log(response);
+			
+			var sets = response.sets;
+			
+			// Pass out the index
+			// var oneSet = 0;
+			
+			// for(var i=0; i< sets.length; i++){		
+			// 	sets[one].index = currentSet;
+	  //          	//console.log("Esse é o index");
+	  //          	//console.log(i);
+
+
+			// 	renderCards(sets[currentSet]);
+	  //          	//renderDateTitle(sets[currentSet]);
+	  //          	currentSet++;  	
+
+
+		 //           	// if (i < 4) {
+		 //           	// 	renderNextFour(sets[currentSet]);
+		 //           	// }	         
+
+	  //       }
+
+		}
+	});
+
+}
+
+
+
 
 
 
@@ -499,17 +454,61 @@ function deleteEvent(setId){
 }
 
 
+// FORM  / ADD PAGE
 
 
 
+function preventEnter(){
 
+	$(document).ready(function() {
+	  $(window).keydown(function(event){
+	    if(event.keyCode == 13) {
+	      event.preventDefault();
+	      return false;
+	    }
+	  });
+	});
 
-// CREATE NEW EVENT PAGE
-
-function addAttraction(){
-		
 }
 
 
 
-//window.addEventListener("DOMContentLoaded", init());
+
+function googleMaps(){
+
+	//GOOGLE MAPS
+	var defaultBounds = new google.maps.LatLngBounds(
+	  new google.maps.LatLng(-90, -180),
+	  new google.maps.LatLng(90, 180));
+
+
+	//Get the HTML input element for the autocomplete search box
+	var input = document.getElementById("address");
+	var options = {
+	  bounds: defaultBounds,
+	};
+
+	var autocomplete = new google.maps.places.Autocomplete(input,options);
+
+}
+
+
+
+
+function renderCopyright(){
+
+	var now = moment();
+	var format = 'YYYY';
+	var year = moment(now).format(format);
+
+	var htmlToAdd = '<p><em>Copyright</em> ' + year + ' Mixgogo </p>';
+
+	jQuery("#copyright").append(htmlToAdd);
+
+}
+
+
+
+
+
+//window.addEventListener("DOMContentLoaded", init );

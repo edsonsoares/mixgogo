@@ -1,5 +1,5 @@
 
-	<body class="home backgroundOrange"> 
+<body class="home backgroundOrange"> 
 
 	<header class="bgheader">
 
@@ -11,69 +11,87 @@
 				</div>
 			</div><!-- Logo -->
 
-			<div class="row text-uppercase "  id="sloganShort">		
-				<div class="col-md-4 pull-right ">
-					<h1 class="thin" style="float:left">Listen</h1><h1>before you go</h1>
+			<div class="row text-uppercase"  id="sloganShort">		
+				<div class="col-md-6 pull-right">
+					<h6 class="thin bootstrap-overrides">Listen <b>before you go</b></h6>
 				</div>
 			</div><!-- Slogan short -->
 
 
 			<div class="row indexOnTop" id="sloganLong">
-				<div class="col-md-5 pull-right">
-					<h1>Preview the music playing at <br> events and venues,
-						and go right.
-					</h1>
+				<div class="col-md-7 pull-right">
+					<h6>Preview the music playing at <br> events and venues in NYC.
+					</h6>
 				</div>
 			</div><!-- Slogan long -->
 
-			<div class= "container" id="preview">
 
-				<div class="row" >
+			<div class="row">
+				<div class="buttonExplore">
+					<a href="http://localhost:3000/upcoming"><input class="btn  btn-primary outline btn-xlarge pull-right" type="button" value="Explore"></a>
+				</div>
+			</div>
 
-					<div class="col-md-6 ">
-						<h1 class="display-4">Upcoming events happening in</h1>
-					</div>
-
-
-					<div class="col-md-6 dropdown">
-					  <button class="btn btn-xlarge dropdown-toggle pull-left" type="button" data-toggle="dropdown">New York
-					  <span class="caret"></span></button>
-					</div>
-
-				</div> <!-- Preview Title -->
-
-				<div class="row">
-
-					<div class="col-md-4">
-					
-						{{#sets}}
-
-							<div id="dateTitle"> {{dateEvent}} </div> 
-							<div id="artcover" class="thumbnail"><img src="{{artcover}}">				
-							<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">
-					        <p><div class="text-uppercase"><a href="api/get/{{_id}}"><h2>  {{title}} </h2></a></div></p>
-					        <div class="track-thumb"><h2><small> {{lineup.artist}} </small></h2></div>
-						
-						{{/sets}}
-
-					</div>
-
-
-<!-- 
-				jQuery("#nextFour-holder").append(thumbToAdd);
-
-
-				$("#bigplay"+currentSet.index).click(function(){
-  					console.log('clicked!');
-  					loadMixgogoPlayer(currentSet);
-  				});	  -->
-
-
-				</div> <!-- Preview Thumbnail -->
-
-			</div><!-- Container do Preview -->
-	
 		</div>
+
+
+
+
+		<div class= "container" id="preview">
+
+			<div class="row" id="upcoming">
+
+				<div class="col-md-6 ">
+					<h1 class="display-4">Upcoming events happening in</h1>
+				</div>
+
+
+				<div class="col-md-6 dropdown">
+				  <button class="btn btn-xlarge dropdown-toggle pull-left" type="button" data-toggle="dropdown">New York
+				  <span class="caret"></span></button>
+				</div>
+
+			</div> <!-- Preview Title -->
+
+			<div class="row">
+						
+					{{#sets}}
+					<div class="col-md-4">
+						<div id="dateTitle"> {{dateEvent}} </div> 
+						<div id="artcover" class="thumbnail">
+							<img src="{{artcover}}">				
+							<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">
+				        	<p>
+				        		<div class="text-uppercase">
+				        			<a href="api/get/{{_id}}">
+				        				<h2> {{title}} </h2>
+				        			</a>
+				        		</div>
+				        	</p>
+				        	<div class="track-thumb">
+				        		<h2><small> {{lineup.artist}} </small></h2>
+				        	</div>
+				        </div>
+					</div>
+					{{/sets}}
+<!-- 
+			jQuery("#nextFour-holder").append(thumbToAdd);
+
+
+			$("#bigplay"+currentSet.index).click(function(){
+					console.log('clicked!');
+					loadMixgogoPlayer(currentSet);
+				});	  -->
+
+			</div> <!-- Row Preview -->
+
+			<div class="row">
+				<div class="col-md-12 buttonMore">
+					<a href="http://localhost:3000/upcoming"><input class="btn  btn-primary outline btn-xlarge text-center" type="button" value="Explore"></a>
+				</div>
+			</div>
+
+		</div><!-- Container do Preview -->
 
 	</header>	
 			
@@ -81,29 +99,31 @@
 	<header class="bgpromoter">
 
 		<div class="container" id="promoters">
-
-
 				<div class="row">
-
 					<div class="col-md-6">
-						<h3>[Here goes image for promoters]</h3>
+						<h3><img src="/img/site/icon_megaphone.png"></h3>
 					</div>
 
 
-					<div class="col-md-6">
-						<p><h1>Make parties? Run a music venue? </h1>
-							<h2>Broadcast the soundtrack of your space on Mixgogo and grow your crowd</h2>
+					<div class="col-md-6" id="promoters2">
+						<p><h6>Make parties? <br>Run a music venue?</h6>
+							<h1>Broadcast the sounds of your space on Mixgogo and grow your crowd
+							<!-- <small>Learn more</small></h1> -->
 						</p>
 					</div>
+		 		</div> 		
+		</div><!-- Promoters -->
 
-		 		</div>
-
+		<div class="container">
+				<div class="row" id="copyright">
+				</div>
 		</div>
 
 	</header>	
+
+
+<script>initSubscribe()</script>
 				
+</body>
 
 
-	</body>
-
-	<script>initSubscribe()</script>

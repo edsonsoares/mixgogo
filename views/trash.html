@@ -1,0 +1,63 @@
+
+// RENDERING DATES AND THUMBS IN THE SAME FUNCTION
+
+//create an category/object of a date
+var aDay = {}
+
+function renderCards(currentSet){
+
+	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
+
+	var dateTitleToAdd = 
+				'<div class="col-md-3 col-sm-6 card-container">'+
+					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
+				'</div>';
+
+
+
+	//If there is no Date Title for one specific day, create it
+	if (!aDay[dateTitle]){
+		//initialize category
+		aDay[dateTitle] = {};
+		//include an array of Sets
+		aDay[dateTitle].sets = [];
+		//include an array of thumbnails
+		aDay[dateTitle].thumbnails = [];
+		
+		//Atribute this object to a div
+		var card = aDay[dateTitle].aDayContainer 
+
+		card = document.createElement('div');
+
+		$('#sets-container').append(card);
+
+		$(card).append(dateTitleToAdd);
+
+	}
+
+	//Add the current set to the array of Sets inside the aDay object
+	aDay[dateTitle].sets.push(currentSet);
+
+	//Append the container Date Title to the div recently created
+
+	var thumbToAdd =  
+				'<div class="col-md-3 col-sm-6 card-container">'+
+					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
+					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
+			         '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
+				'</div>';
+				
+				aDay[dateTitle].thumbnails.push(thumbToAdd);
+
+				$(card).append(thumbToAdd);
+
+
+				$("#bigplay"+currentSet.index).click(function(){
+  					console.log('clicked!');
+  					loadMixgogoPlayer(currentSet);
+  				});
+
+
+}
+
