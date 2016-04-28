@@ -124,11 +124,15 @@ body{
 }
 
 
+#dates-holder{
+	width: 96px;
+}
+
 
 .btn-calendar{
 	background: none;
 	padding: 12px 22px;
-	width: 100px;
+	width: 120px;
 	border: 2px solid #fff;
 	color: #fff;
 	white-space:normal !important;

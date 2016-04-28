@@ -256,10 +256,10 @@ function renderWeek(currentDay){
 
 			//console.log('inside render week');
 			var now = moment();
-			var format = 'ddd <br> D <br> MMM';
+			var format = 'D <br> MMM';
 			var result = moment(now).add(currentDay, 'day').format(format);
 			//dayCounter++;
-			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-sm" id="day-holder">'+result+'</button></div>';
+			var htmlToAdd = '<button type="button" class="btn btn-calendar btn-lg" id="day-holder">'+result+'</button></div>';
 
 			jQuery("#dates-holder").append(htmlToAdd);
 }
