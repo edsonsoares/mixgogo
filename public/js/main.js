@@ -284,7 +284,8 @@ function soundcloudSDK(){
 
 	SC.initialize({
     	client_id: "95761a6a9b70583b71e0f8436edc8db3",
-    	redirect_uri: "http://localhost:3000/callback.html",
+    	//redirect_uri: "http://localhost:3000/callback.html",
+    	redirect_uri: "https://mixgogo-prot.herokuapp.com/callback.html",
   	});
 }
     

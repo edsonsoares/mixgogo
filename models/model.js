@@ -27,10 +27,6 @@ var setSchema = new Schema({
 })
 
 
-
-
-
-
 // Trying to make artists an array
 
 
