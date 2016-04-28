@@ -36,7 +36,7 @@ router.get('/', function(req, res) {
           $gte: new Date(),
         }
 
-    }).sort('-dateEvent').limit(4).exec(function(err, data){
+    }).sort('-dateEvent').limit(6).exec(function(err, data){
           // if err or no sets found, respond with error 
         if(err || data == null){
           var error = {status:'ERROR', message: 'Could not find sets'};
@@ -207,8 +207,9 @@ router.post('/api/create', multipartMiddleware, function(req, res){
 
     // pull out the information from the req.body
     var title = req.body.title;
-    var artist = req.body.lineup.artist.split(',');
-    var soundcloudUrl = req.body.lineup.soundcloudUrl.split(',');
+    var tags = req.body.tags.split(',');
+    var artist = req.body.artist;
+    var soundcloudUrl = req.body.soundcloudUrl;
     var description = req.body.description;
     var isfree = req.body.isfree ? true : false;
     var minPrice = req.body.minPrice;
@@ -222,20 +223,16 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     var city = req.body.city;
 
 
-    // When trying to make artists an array of objects
-    // var artists = [];
-    // artists[0] = {name: req.body.artist0, url: req.body.soundcloudUrl0};
-
-   //console.log("Example of Soundcloud URL --->" + soundcloudUrl);
-
-
     // hold all this data in an object
     // this object should be structured the same way as your db model
     var setObj = {
     
       title: title,
-      artist: artist,
-      soundcloudUrl: soundcloudUrl,
+      tags: tags,
+      lineup:{
+        artist: artist,
+        soundcloudUrl: soundcloudUrl
+      },
       description: description,
       isfree: isfree,
       minPrice: minPrice,
@@ -316,13 +313,11 @@ router.post('/api/create', multipartMiddleware, function(req, res){
               //respond with rendering a page
               //res.render('event.html', jsonData);
 
-             res.render('templates/temp_event.html', jsonData);
+              res.render('templates/temp_event.html', jsonData);
 
              //console.log(set.id);
 
-            res.redirect ("/api/event/" + set.id); 
-
-
+            res.redirect ("/api/get/" + set.id); 
 
 
         })  //end of set save
@@ -364,13 +359,6 @@ function cleanFileName (filename) {
 
 
 
-
-
-
-
-
-
-
 // /** ____________________________________________________________________________
 
 //  * POST '/api/update/:id'
@@ -388,8 +376,9 @@ router.post('/api/edit/:id', function(req, res){
 
    // pull out the information from the req.body
     title: req.body.title,
-    artist: req.body.artist.split(","),
-    soundcloudUrl: req.body.soundcloudUrl.split(","),
+    tags: req.body.tags.split(","),
+    artist: req.body.artist,
+    soundcloudUrl: req.body.soundcloudUrl,
     description: req.body.description,
     isfree: req.body.isfree,
     minPrice: req.body.minPrice,
@@ -405,7 +394,7 @@ router.post('/api/edit/:id', function(req, res){
 
    }
 
-   console/log(setObj);
+   console.log(setObj);
 
  
     // now, update that set

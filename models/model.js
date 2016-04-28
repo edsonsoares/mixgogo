@@ -8,8 +8,8 @@ var setSchema = new Schema({
 	title: String,
 	tags: [String],
 	lineup: {
-		soundcloudUrl: [String],
-		artist: [String]
+		artist: String,
+		soundcloudUrl: String
 	},
 	description: String,
 	isfree: {type: Boolean, default: false},

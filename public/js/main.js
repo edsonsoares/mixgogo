@@ -1,4 +1,5 @@
 var empty = true;
+var notPlaying = true;
 
 // CUSTOM JS FILE //
 // This is where frontend Javascript runs //
@@ -67,7 +68,7 @@ var aDay = {}
 
 function renderDateTitle(currentSet){
 
-	console.log('inside render date');
+	//console.log('inside render date');
 
 	var dateTitle = moment(currentSet.dateEvent, 'YYYY-MM-DD').format('ddd <br> D <br> MMM');
 
@@ -253,7 +254,7 @@ function pullDays(){
 //WEEK 2nd STEP: Now fill in the other days of the week
 function renderWeek(currentDay){
 
-			console.log('inside render week');
+			//console.log('inside render week');
 			var now = moment();
 			var format = 'ddd <br> D <br> MMM';
 			var result = moment(now).add(currentDay, 'day').format(format);
@@ -293,96 +294,196 @@ function soundcloudSDK(){
 //Lets load Mixgogo's own player
 function loadMixgogoPlayer(currentSet){
 
-	console.log(currentSet);
-
-	//var playingNow = document.getElementById('set-info');
-	//console.log("This is playing now ->")
-	//console.log(playingNow);
-	
 	console.log(empty);
 	console.log(currentSet);
 
 
-
 	if (empty == true) {
 
-		console.log("born empty")
+		//console.log("born empty")
 
-				console.log("Let's load Mixgogo awesome player!");
+		//console.log("Let's load Mixgogo awesome player!");
 
-				var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
-				document.getElementById("art-work").innerHTML = setArtwork;
+		var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
+		document.getElementById("art-work").innerHTML = setArtwork;
 
-				var setsInfo = '<h3>'+currentSet.title+'</h3>';
-				//return $('#nav-sets').append(setsNav);
-				document.getElementById("set-info").innerHTML = setsInfo;
+		var setsInfo = '<h3>'+currentSet.title+'</h3>';
+		//return $('#nav-sets').append(setsNav);
+		document.getElementById("set-info").innerHTML = setsInfo;
 
-				var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-				document.getElementById("wave-form").innerHTML = waveForm;
 
-				//console.log(playingNow.innerHTML);
+		var track_url = currentSet.lineup.soundcloudUrl;
+		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+		  	var track_waveform = result.waveform_url;
+		  	//document.getElementById("wave-form").innerHTML = track_waveform;
+		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');			
+		});
 
-				empty = false;
+	
+
+		// var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
+		// document.getElementById("wave-form").innerHTML = waveForm;
+
+		//console.log(playingNow.innerHTML);
+
+
+		playNow(currentSet);
+
+		empty = false;
+
 
 
 	} else {
 
-				// document.getElementById("#player").innerHTML = '';
 
-				var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
-				document.getElementById("art-work").innerHTML = setArtwork;
+		// // document.getElementById("#player").innerHTML = '';
+		// document.getElementById("art-work").innerHTML = '';
 
+		var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
+		$('#art-work').empty().prepend(setArtwork);
 
-				var setsInfo = '<h3>'+currentSet.title+'</h3>';
-				//return $('#nav-sets').append(setsNav);
-				document.getElementById("set-info").innerHTML = setsInfo;
+		var setsInfo = '<h3>'+currentSet.title+'</h3>';
+		$('#set-info').empty().prepend(setsInfo);
 
-				var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-				document.getElementById("wave-form").innerHTML = waveForm;
+		var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
+		$('#wave-form').empty().prepend(waveForm);
 
-
-				// var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
-				// $('#art-work').append(setArtwork);
-
-				// var setsInfo = '<h3>'+currentSet.title+'</h3>';
-				// //return $('#nav-sets').append(setsNav);
-				// $('#set-info').append(setsInfo);
-
-				var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-				$('#wave-form').append(waveForm);
+		var track_url = currentSet.lineup.soundcloudUrl;
+		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+		  	var track_waveform = result.waveform_url;
+		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');			
+		});
 
 
-		console.log("WAVEFORM");
-		console.log(currentSet.waveform);
+		playNow(currentSet);
+
+
+		// document.getElementById("set-info").innerHTML = '';
+
+		// document.getElementById("wave-form").innerHTML = '';
+
+
+		// var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
+		// $('#art-work').append(setArtwork);
+
+		// var setsInfo = '<h3>'+currentSet.title+'</h3>';
+		// //return $('#nav-sets').append(setsNav);
+		// $('#set-info').append(setsInfo);
+
+		// document.getElementById("wave-form").innerHTML = '';
+
+		//loadMixgogoPlayer(currentSet);
+
+
+		// 	// document.getElementById("#player").innerHTML = '';
+		// 	var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
+		// 	document.getElementById("art-work").innerHTML = setArtwork;
+
+
+		// 	var setsInfo = '<h3>'+currentSet.title+'</h3>';
+		// 	//return $('#nav-sets').append(setsNav);
+		// 	document.getElementById("set-info").innerHTML = setsInfo;
+
+		// 	var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
+		// 	document.getElementById("wave-form").innerHTML = waveForm;
+
+
+		// 	// var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
+		// 	// $('#art-work').append(setArtwork);
+
+		// 	// var setsInfo = '<h3>'+currentSet.title+'</h3>';
+		// 	// //return $('#nav-sets').append(setsNav);
+		// 	// $('#set-info').append(setsInfo);
+
+		// 	var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
+		// 	$('#wave-form').append(waveForm);
+
+
+		// console.log("WAVEFORM");
+		// console.log(currentSet.waveform);
 	}
 
-
-	playNow(currentSet);
 
 	console.log("THIS SHOULD BE PLAYING--->" + currentSet)
 
 
 }
 
+
+
 //Once the player is loaded woth rigth Set, let's play its sound
 function playNow (currentSet){
 
-		// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
-		var track_url = currentSet.lineup.soundcloudUrl;
-		
-		// With ajax we use the soundcloudUrl to access the tracks' JSON file, and find its id
-		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
-			  	console.log("THIS IS THE RESULT ---->"+result);
-				var track_id = result.id;
+	// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
+	var track_url = currentSet.lineup.soundcloudUrl;
+	console.log('Essa é a track_url');
+	console.log(track_url);
 
-				SC.stream('/tracks/'+track_id, function(sound){
-					sound.play();
+
+	$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+		  	console.log("THIS IS THE RESULT ---->");
+		  	console.log(result);
+		  	var track_id = result.id;
+
+			SC.stream('/tracks/'+track_id, function(sound){
+
+				// Save this sound element in a object or somewhere in the page. If the element exists, 
+				//stop it first, delete it, attach the coming element to the object and play the new one
+				    if (window.currentSong){
+				    	window.currentSong.pause();
+				    	window.currentSong = null;
+				    }
+				    window.currentSong = sound;
+					window.currentSong.play();
 					console.log("Track playing-->" + track_id);	
-				});
 			});
+		});
+
+	
+
+	
+
+	// if (empty == true) {
+	// 	// With ajax we use the soundcloudUrl to access the tracks' JSON file, and find its id
+	// 	$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+	// 		  	console.log("THIS IS THE RESULT ---->");
+	// 		  	console.log(result);
+
+	// 			var track_id = result.id;
+
+	// 			SC.stream('/tracks/'+track_id, function(sound){
+	// 				sound.play();
+	// 				console.log("Track playing-->" + track_id);	
+	// 			});
+	// 		});
+
+
+	// 	empty = false;
+
+	// 	}else{
+			
+	// 		SC.sound.stop();
+
+	// 		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
+	// 		  	console.log("THIS IS THE RESULT ---->");
+	// 		  	console.log(result);
+
+	// 			var track_id = result.id;
+
+	// 			SC.stream('/tracks/'+track_id, function(sound){
+	// 				sound.play();
+	// 				console.log("Track playing-->" + track_id);	
+	// 			});
+	// 		});
+
+	// 	}
+
+
+
+
+
+
 }
-
-
 
 
 
