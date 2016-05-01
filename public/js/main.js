@@ -1,9 +1,10 @@
+//Player bollean, check if there is Se object appended to the player's divs
 var empty = true;
-var notPlaying = true;
+// Arrayz with items associated with the Set object that need to be used in different functions
+var songs = [];
+
 
 // CUSTOM JS FILE //
-// This is where frontend Javascript runs //
-
 function init() {
 	pullData();
 	soundcloudSDK();
@@ -28,6 +29,7 @@ function initAdd() {
 
 
 
+
 // FEED & PLAYER //
 //Let's pull the data MongoDB
 function pullData(){
@@ -38,9 +40,18 @@ function pullData(){
 		url : '/api/get/',
 		dataType : 'json',
 		success : function(response) {
-			
+
+
 			// console.log('got data: ');
-			// console.log(response);
+			console.log('resp', response);
+
+			for (var i =0; i < response.sets.length; i++){
+				console.log(response.sets[i])
+					songs.push(response.sets[i].lineup);
+			}
+			console.log('songs', songs)
+		
+
 			var sets = response.sets;
 			
 			// Pass out the index
@@ -48,9 +59,6 @@ function pullData(){
 			
 			for(var i=0; i< sets.length; i++){		
 				sets[currentSet].index = currentSet;
-	           	//console.log("Esse é o index");
-	           	//console.log(i);
-				// renderCards(sets[currentSet]);
 	           	renderDateTitle(sets[currentSet]);
 	           	currentSet++;  	
 	        }
@@ -80,8 +88,6 @@ function renderDateTitle(currentSet){
 				'</div>';
 
 	$(dateTitleToAdd).html(html)
-
-
 
 	//If there is no Date Title for one specific day, create it
 	if (!aDay[dateTitle]){
@@ -113,6 +119,11 @@ function renderDateTitle(currentSet){
 
 
 
+
+
+
+
+
 //RENDER EVENTS //
 function renderEvents(currentSet, dateTitle){
 
@@ -123,25 +134,13 @@ function renderEvents(currentSet, dateTitle){
 				var html = 
 				'<div class="col-md-3">'+
 					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-					'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+					'<input type="image" src="/img/site/event_play.png" class="thumbplay" id="bigplay'+currentSet.index+'" alt="Play">'+
 			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
 			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
 				'</div>';
 				
 
 				$(thumbToAdd).html(html);
-
-				// console.log(currentSet);
-
-				// console.log( $("#bigplay"+currentSet.index) );
-
-				// setTimeout(function() {
-				// 	$("#bigplay"+currentSet.index).click(function(){
-	  	// 				console.log('clicked!');
-	  	// 				loadMixgogoPlayer(currentSet);
-	  	// 			});
-				// }, 1);
-
 				
 				aDay[dateTitle].thumbnails.push(thumbToAdd);
 
@@ -163,26 +162,6 @@ function renderEvents(currentSet, dateTitle){
 //RENDER NEXT 4 EVENTS //
 function renderNextFour(){
 
-	// console.log('Render Next 4 Events');
-
-	// 			var thumbToAdd = 
-	// 			'<div class="col-md-3">'+
-	// 				'<div id="dateTitle">'+ currentSet.dateEvent + '</div>' +
-	// 				'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-	// 				'<input type="image" src="/img/site/event_play.png" class="bigplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-	// 		        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-	// 		        // '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-	// 			'</div>';
-
-	// 			jQuery("#nextFour-holder").append(thumbToAdd);
-
-
-	// 			$("#bigplay"+currentSet.index).click(function(){
- //  					console.log('clicked!');
- //  					loadMixgogoPlayer(currentSet);
- //  				});	 
-
-
 
 console.log('Pull next four data');
 
@@ -195,26 +174,6 @@ console.log('Pull next four data');
 			console.log(response);
 			
 			var sets = response.sets;
-			
-			// Pass out the index
-			// var oneSet = 0;
-			
-			// for(var i=0; i< sets.length; i++){		
-			// 	sets[one].index = currentSet;
-	  //          	//console.log("Esse é o index");
-	  //          	//console.log(i);
-
-
-			// 	renderCards(sets[currentSet]);
-	  //          	//renderDateTitle(sets[currentSet]);
-	  //          	currentSet++;  	
-
-
-		 //           	// if (i < 4) {
-		 //           	// 	renderNextFour(sets[currentSet]);
-		 //           	// }	         
-
-	  //       }
 
 		}
 	});
@@ -251,6 +210,10 @@ function pullDays(){
 
 
 
+
+
+
+
 //WEEK 2nd STEP: Now fill in the other days of the week
 function renderWeek(currentDay){
 
@@ -266,9 +229,11 @@ function renderWeek(currentDay){
 
 
 
+
+
+
 	
 //WEEK 3rd STEP: move days forwad and backwards at week toolbar
-
 $("#next-week").click(function(){
 		pullDays();
 		// console.log('Moved to Next Week');
@@ -291,6 +256,30 @@ function soundcloudSDK(){
     
 
 
+
+
+
+
+
+//Change visibility of player
+
+$(".thumbplay").on("click", function(){
+$('#player').show();
+
+	  alert( "This will be displayed only once." );
+
+});
+
+
+
+function show(){
+  //alert("cheked the button - worked");
+  document.getElementBy('show_button').style.display= 'block' ;
+}
+
+
+
+
 //When the user hit any of the big Play button
 //Lets load Mixgogo's own player
 function loadMixgogoPlayer(currentSet){
@@ -302,7 +291,6 @@ function loadMixgogoPlayer(currentSet){
 	if (empty == true) {
 
 		//console.log("born empty")
-
 		//console.log("Let's load Mixgogo awesome player!");
 
 		var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
@@ -317,28 +305,20 @@ function loadMixgogoPlayer(currentSet){
 		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
 		  	var track_waveform = result.waveform_url;
 		  	//document.getElementById("wave-form").innerHTML = track_waveform;
-		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');			
+		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');
+		  	var track_author = result.user.username;
+		  	var track_title = result.title;
+		  	$('#soundcloud-info').empty().prepend('<p>Source: &nbsp'+track_title+', by '+track_author+'</p>');
 		});
 
+
+
+
 	
-
-		// var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-		// document.getElementById("wave-form").innerHTML = waveForm;
-
-		//console.log(playingNow.innerHTML);
-
-
-		playNow(currentSet);
-
 		empty = false;
-
-
 
 	} else {
 
-
-		// // document.getElementById("#player").innerHTML = '';
-		// document.getElementById("art-work").innerHTML = '';
 
 		var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
 		$('#art-work').empty().prepend(setArtwork);
@@ -352,71 +332,43 @@ function loadMixgogoPlayer(currentSet){
 		var track_url = currentSet.lineup.soundcloudUrl;
 		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
 		  	var track_waveform = result.waveform_url;
-		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');			
-		});
+		  	$('#wave-form').empty().prepend('<img class="img-responsive player-btn" src="'+track_waveform+'" />');
+		  	var track_author = result.user.username;
+		  	var track_title = result.title;
+		  	$('#soundcloud-info').empty().prepend('<p>Source: &nbsp'+track_title+', by '+track_author+'</p>');
+		});			
 
 
-		playNow(currentSet);
 
-
-		// document.getElementById("set-info").innerHTML = '';
-
-		// document.getElementById("wave-form").innerHTML = '';
-
-
-		// var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
-		// $('#art-work').append(setArtwork);
-
-		// var setsInfo = '<h3>'+currentSet.title+'</h3>';
-		// //return $('#nav-sets').append(setsNav);
-		// $('#set-info').append(setsInfo);
-
-		// document.getElementById("wave-form").innerHTML = '';
-
-		//loadMixgogoPlayer(currentSet);
-
-
-		// 	// document.getElementById("#player").innerHTML = '';
-		// 	var setArtwork = '<img src="'+currentSet.artcover+'" height="96" width="96">';
-		// 	document.getElementById("art-work").innerHTML = setArtwork;
-
-
-		// 	var setsInfo = '<h3>'+currentSet.title+'</h3>';
-		// 	//return $('#nav-sets').append(setsNav);
-		// 	document.getElementById("set-info").innerHTML = setsInfo;
-
-		// 	var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-		// 	document.getElementById("wave-form").innerHTML = waveForm;
-
-
-		// 	// var setArtwork = '<img src="'+currentSet.artwork+'" height="96" width="96">';
-		// 	// $('#art-work').append(setArtwork);
-
-		// 	// var setsInfo = '<h3>'+currentSet.title+'</h3>';
-		// 	// //return $('#nav-sets').append(setsNav);
-		// 	// $('#set-info').append(setsInfo);
-
-		// 	var waveForm = '<img src="'+currentSet.waveform+'" height="80" width="300">';
-		// 	$('#wave-form').append(waveForm);
-
-
-		// console.log("WAVEFORM");
-		// console.log(currentSet.waveform);
 	}
 
-
-	console.log("THIS SHOULD BE PLAYING--->" + currentSet)
-
-
+	playNow(currentSet);
+	playNext()
+	console.log("THIS SHOULD BE PLAYING--->" + currentSet);
+	
 }
 
 
 
-//Once the player is loaded woth rigth Set, let's play its sound
-function playNow (currentSet){
 
-	// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
-	var track_url = currentSet.lineup.soundcloudUrl;
+
+
+//Once the player is loaded woth rigth Set, let's play its sound
+function playNow (currentSet, url){
+
+	var track_url
+
+
+	//if passing just the url, means there is already something playing 
+	// and 
+
+	if(url){
+			track_url = url.soundcloudUrl
+		}else{
+			// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
+			track_url = currentSet.lineup.soundcloudUrl;
+	}
+
 	console.log('Essa é a track_url');
 	console.log(track_url);
 
@@ -428,6 +380,7 @@ function playNow (currentSet){
 
 			SC.stream('/tracks/'+track_id, function(sound){
 
+				// currentPlay.currentSong = {};
 				// Save this sound element in a object or somewhere in the page. If the element exists, 
 				//stop it first, delete it, attach the coming element to the object and play the new one
 				    if (window.currentSong){
@@ -436,55 +389,40 @@ function playNow (currentSet){
 				    }
 				    window.currentSong = sound;
 					window.currentSong.play();
-					console.log("Track playing-->" + track_id);	
+					console.log("Track playing-->" + track_id);
 			});
 		});
 
-	
-
-	
-
-	// if (empty == true) {
-	// 	// With ajax we use the soundcloudUrl to access the tracks' JSON file, and find its id
-	// 	$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
-	// 		  	console.log("THIS IS THE RESULT ---->");
-	// 		  	console.log(result);
-
-	// 			var track_id = result.id;
-
-	// 			SC.stream('/tracks/'+track_id, function(sound){
-	// 				sound.play();
-	// 				console.log("Track playing-->" + track_id);	
-	// 			});
-	// 		});
-
-
-	// 	empty = false;
-
-	// 	}else{
-			
-	// 		SC.sound.stop();
-
-	// 		$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
-	// 		  	console.log("THIS IS THE RESULT ---->");
-	// 		  	console.log(result);
-
-	// 			var track_id = result.id;
-
-	// 			SC.stream('/tracks/'+track_id, function(sound){
-	// 				sound.play();
-	// 				console.log("Track playing-->" + track_id);	
-	// 			});
-	// 		});
-
-	// 	}
-
-
-
-
-
 
 }
+
+
+
+
+
+var songIndex = 0;
+
+function playNext(){
+
+	songIndex++;
+
+	console.log('playnext songs', songs, songIndex)
+
+
+	$("#next-event").click(function(){
+			
+		console.log('index of what is playing is');
+		// console.log(currentPlay.playIndex);
+		playNow(null, songs[songIndex]);
+
+	});
+
+}
+
+
+
+
+
 
 
 

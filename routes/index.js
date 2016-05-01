@@ -36,7 +36,7 @@ router.get('/', function(req, res) {
           $gte: new Date(),
         }
 
-    }).sort('-dateEvent').limit(6).exec(function(err, data){
+    }).sort('dateEvent').limit(6).exec(function(err, data){
           // if err or no sets found, respond with error 
         if(err || data == null){
           var error = {status:'ERROR', message: 'Could not find sets'};
