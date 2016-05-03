@@ -5,23 +5,35 @@
       <h1>New Event</h1>
   </div>
 
- <form method="post" action="/api/create" id="editForm" enctype="multipart/form-data">
+
+ {{#set}}
+
+ <form method="post" action="/api/update/{{id}}" id="editForm" enctype="multipart/form-data">
+
+
+
 
   <!-- TITLE, ART, TAGS -->
 
   <div class="row form-group">
 
+
       <div class="col-md-3">
         <label for="artcover">Art cover</label>
-        <input class="btn btn-default form-control input-lg" type="file" name="artcover" id="artcover" value="{{set.artcover}}">
+        {{#artcover}}
+        <img src='{{artcover}}'>
+        {{/artcover}}
+        <input class="btn btn-default form-control input-lg" type="file" name="artcover" id="artcover" value="{{artcover}}">
       </div>
 
       <div class="col-md-9">
         <label for="title">Title</label>
-        <input type="text" class="form-control input-lg" id="title" placeholder="Event Name" name="title" value="{{set.title}}">
+        <input type="text" class="form-control input-lg" id="title" placeholder="Event Name" name="title" value="{{title}}">
 
         <label for="tags">Tags</label>
-        <textarea rows="3" cols="50" class="form-control input-lg" id="tags" placeholder="tags separated by commas" name="tags" value="{{set.[tags]}}"></textarea>
+        <textarea rows="3" cols="50" class="form-control input-lg" id="tags" name="tags" >
+        {{tagString}}
+        </textarea>
       </div>
 
   </div>
@@ -34,7 +46,7 @@
 
     <div class="col-md-3">
       <label for="artist">Artist</label>
-      <input type="text" class="form-control input-lg" placeholder="Artist" id="artist" name="artist" value="{{set.lineup.artist}}">
+      <input type="text" class="form-control input-lg" placeholder="Artist" id="artist" name="artist" value="{{lineup.artist}}">
 
 
      <!--  <label for="artist">Artist</label>
@@ -57,7 +69,7 @@
     <div class="col-md-9">
 
       <label for="soundcloudUrl">Soundcloud Url</label>
-      <input type="text" class="form-control input-lg"  name="soundcloudUrl" id="soundcloudUrl" placeholder="Paste soundcloud URL of artist's recent track" value="{{set.lineup.soundcloudUrl}}">
+      <input type="text" class="form-control input-lg"  name="soundcloudUrl" id="soundcloudUrl" placeholder="Paste soundcloud URL of artist's recent track" value="{{lineup.soundcloudUrl}}">
       <!-- 
       <label for="soundcloudUrl">Soundcloud Url</label>
       <input type="text" class="form-control input-lg"  name="soundcloudUrl0" placeholder="Paste soundcloud URL of artist's recent track" >
@@ -100,15 +112,15 @@
         <div class="row form-group"> 
           <div class="col-md-6 form-group">
             <label for="minPrice">From</label><br>
-            <input type="text" class="form-control input-lg" id="minPrice" placeholder="minPrice" name="minPrice" value="{{set.minPrice}}">
+            <input type="text" class="form-control input-lg" id="minPrice" placeholder="minPrice" name="minPrice" value="{{minPrice}}">
           </div>
           
           <div class="col-md-6 form-group">
             <label for="maxPrice">To</label><br>
-            <input type="text" class="form-control input-lg" id="maxPrice" placeholder="maxPrice" name="maxPrice" value="{{set.maxPrice}}">
+            <input type="text" class="form-control input-lg" id="maxPrice" placeholder="maxPrice" name="maxPrice" value="{{maxPrice}}">
             
             <div class="checkbox">
-              <input type="checkbox" name="isfree" value="{{set.isfree}}">Free<br>
+              <input type="checkbox" name="isfree" value="{{isfree}}">Free<br>
             </div>
 
           </div>
@@ -117,7 +129,7 @@
 
     <div class="col-md-9 form-group">
       <label for="buyUrl">Buy</label>
-      <input type="text" class="form-control input-lg" id="buyUrl" placeholder="Link to buy ticket" name="buyUrl" value="{{set.buyUrl}}">
+      <input type="text" class="form-control input-lg" id="buyUrl" placeholder="Link to buy ticket" name="buyUrl" value="{{buyUrl}}">
     </div>
 
   </div>
@@ -131,19 +143,19 @@
         <div class="row form-group">
           <div class="col-md-12">
             <label for="dateEvent">Date</label>
-            <input type="date"  class="form-control input-lg" id="dateEvent" placeholder="date" name="dateEvent" value="{{set.dateEvent}}">
+            <input type="date"  class="form-control input-lg" id="dateEvent" placeholder="date" name="dateEvent" value="{{dateEvent}}">
           </div>
         </div>
 
         <div class="row form-group">
           <div class="col-md-6">
-            <label for="startTime">Start time</label>
-            <input type="text" class="form-control input-lg" id="startTime" placeholder="Starts at" name="startTime">
+            <label for="startTime">Start time</label>  
+            <input type="text" class="form-control input-lg" id="startTime" placeholder="Starts at" name="startTime" value="{{startTime}}">
           </div>
     
           <div class="col-md-6">
             <label for="endTime">End time</label>
-            <input type="text" class="form-control input-lg" id="endTime" placeholder="Finishes at" name="endTime">
+            <input type="text" class="form-control input-lg" id="endTime" placeholder="Finishes at" name="endTime" value="{{endTime}}">
           </div>
 
         </div>
@@ -154,18 +166,18 @@
         <div class="row form-group">
            <div class="col-md-12"> 
             <label for="address">Address</label>
-            <input type="text" class="form-control input-lg" id="address" placeholder="start typing the address" name="address">
+            <input type="text" class="form-control input-lg" id="address" placeholder="start typing the address" name="address" value="{{address}}">
           </div>
         </div>
 
         <div class="row form-group">
           <div class="col-md-6">
             <label for="zip">Zip</label>
-            <input type="text" class="form-control input-lg" id="zip" placeholder="zip" name="zip" value="{{set.zip}}">
+            <input type="text" class="form-control input-lg" id="zip" placeholder="zip" name="zip" value="{{zip}}">
           </div>
           <div class="col-md-6">
             <label for="city">City</label>
-            <input type="text" class="form-control input-lg" id="city" placeholder="city" name="city" value="{{set.city}}">
+            <input type="text" class="form-control input-lg" id="city" placeholder="city" name="city" value="{{city}}">
           </div>
         </div>
       </div>
@@ -179,10 +191,13 @@
 
       <div class="col-md-9 form-group">
           <label for="description">Description</label>
-          <textarea rows="4" cols="50" class="form-control input-lg" id="description" placeholder="Tell the story of this event" name="description" value="{{set.soundcloudUrl}}"></textarea>
+          <textarea rows="4" cols="50" class="form-control input-lg" id="description" placeholder="Tell the story of this event" name="description" value="{{description}}"></textarea>
       </div>
   </div>
 
+
+
+  {{/set}}
 
 
 

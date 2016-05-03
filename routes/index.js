@@ -3,6 +3,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
+var moment = require('moment');
+
 // our db models
 var Set = require("../models/model.js");
 var Today = require("../models/dates.js");
@@ -29,11 +31,16 @@ var multipartMiddleware = multipart();
 
 router.get('/', function(req, res) {
 
+
+  console.log(moment().startOf('day').toDate());
+
   Set.find( 
     {
       'dateEvent':
         {
-          $gte: new Date(),
+
+          $gte: moment().startOf('day').toDate()
+
         }
 
     }).sort('dateEvent').limit(6).exec(function(err, data){
@@ -73,13 +80,14 @@ router.get('/upcoming', function(req,res){
 router.get('/api/get', function(req, res){
 
   
+  // console.log(moment().startOf('day').toDate());
   // mongoose method to find sets from events happening later than today, 
   //see http://mongoosejs.com/docs/api.html#model_Model.find
   Set.find( 
     {
       'dateEvent':
         {
-          $gte: new Date(),
+          $gte: moment().startOf('day').subtract(1, 'days').toDate()
         }
 
     }).sort('dateEvent').exec(function(err, data){
@@ -125,7 +133,7 @@ router.get('/api/get/:id', function(req, res){
        return res.json(error);
     }else{
 
-      console.log(data);
+      //console.log(data);
         res.render('templates/temp_event.html', {
         status: 'OK',
         layout:'layout', 
@@ -141,51 +149,15 @@ router.get('/api/get/:id', function(req, res){
 
 
 /* ____________________________________________________________________________
-  
   GET '/add'
-
   Default add new event route. loads the form for adding a new Set (event).
- 
  */
 
 
 router.get('/api/add', function(req,res){
-
   //console.log('got into the add set page');
-
-  res.render('templates/temp_add.html', {layout:"noplayer-layout"})
-
+  res.render('templates/temp_add.html', {layout:"add-layout"})
  });
-
-
-
-router.get('/api/edit/:id', function(req,res){
-
-  var requestedId = req.params.id;
-
-  Set.findById(requestedId,function(err,data){
-    if(err){
-      var error = {
-        status: "ERROR",
-        message: err
-      }
-      return res.json(err)
-    }
-
-    var viewData = {
-      status: "OK",
-      set: data,      
-      layout:"noplayer-layout" // add layout as a field in viewData
-    }
-
-
-    return res.render('templates/temp_edit.html', viewData)
-    //return res.render('edit.html', {layout:"noplayer-layout"}, viewData)
-
-  })
-
-})
-
 
 
 
@@ -203,7 +175,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
   //console.log('the incoming data >> ' + JSON.stringify(req.body));
   //console.log('the incoming image file >> ' + JSON.stringify(req.files.artcover));
 
-  console.log("BODY", req.body);
+  //console.log("BODY", req.body);
 
     // pull out the information from the req.body
     var title = req.body.title;
@@ -226,7 +198,6 @@ router.post('/api/create', multipartMiddleware, function(req, res){
     // hold all this data in an object
     // this object should be structured the same way as your db model
     var setObj = {
-    
       title: title,
       tags: tags,
       lineup:{
@@ -256,8 +227,7 @@ router.post('/api/create', multipartMiddleware, function(req, res){
  // create a cleaned file name to store in S3
   // see cleanFileName function below
   var cleanedFileName = cleanFileName(filename);
-
-// We first need to open and read the uploaded image into a buffer
+  // We first need to open and read the uploaded image into a buffer
   fs.readFile(path, function(err, file_buffer){
 
     // reference to the Amazon S3 Bucket
@@ -275,6 +245,8 @@ router.post('/api/create', multipartMiddleware, function(req, res){
       ContentType: mimeType
     };
 
+
+
     // Put the above Object in the Bucket
     s3bucket.putObject(params, function(err, data) {
       if (err) {
@@ -283,12 +255,16 @@ router.post('/api/create', multipartMiddleware, function(req, res){
       } else {
         //console.log("Successfully uploaded data to s3 bucket");
 
+
+
         // now that we have the image
         // we can add the s3 url our person object from above
         setObj['artcover'] = s3Path + cleanedFileName;
 
+
         // create a new set model instance, passing in the object
         var set = new Set(setObj);
+
 
         // now, save that set instance to the database
         // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
@@ -301,7 +277,6 @@ router.post('/api/create', multipartMiddleware, function(req, res){
           } else {
               //console.log('saved a new set!');
               //console.log(data);
-
               // now return the json data of the new set
               var jsonData = {
                 status: 'OK',
@@ -357,10 +332,44 @@ function cleanFileName (filename) {
 
 
 
+router.get('/api/edit/:id', function(req,res){
+
+  var requestedId = req.params.id;
+
+  Set.findById(requestedId,function(err,data){
+    if(err){
+      var error = {
+        status: "ERROR",
+        message: err
+      }
+      return res.json(err)
+    }
+
+
+    //insert the variable dataString into data, so the tags come separated by commas
+    var tagString = data.tags.join(', ');
+    data.tagString = tagString;
+
+    console.log('tagString', tagString);
+
+    var viewData = {
+      status: "OK",
+      set: data,      
+      layout:"add-layout"
+    }
+
+
+    return res.render('templates/temp_edit.html', viewData)
+
+  })
+
+})
+
+
+
 
 
 // /** ____________________________________________________________________________
-
 //  * POST '/api/update/:id'
 //  * Receives a POST request with data of the set to update, updates db, responds back
 //  * @param  {String} req.param('id'). The setId to update
@@ -368,56 +377,90 @@ function cleanFileName (filename) {
 //  * @return {Object} JSON
 //  */
 
-router.post('/api/edit/:id', function(req, res){
+router.post('/api/update/:id', multipartMiddleware, function(req, res){
 
-   var requestedId = req.param.id;
 
-   var setObj ={ 
+  console.log('UPDATINGGG');
+
+
+   var requestedId = req.params.id;
+
+   console.log(requestedId);
+
 
    // pull out the information from the req.body
-    title: req.body.title,
-    tags: req.body.tags.split(","),
-    artist: req.body.artist,
-    soundcloudUrl: req.body.soundcloudUrl,
-    description: req.body.description,
-    isfree: req.body.isfree,
-    minPrice: req.body.minPrice,
-    maxPrice: req.body.maxPrice,
-    buyUrl: req.body.buyUrl,
-    artcover: req.body.artcover,
-    dateEvent: req.body.dateEvent,
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
-    address: req.body.adress,
-    zip: req.body.zip,
-    city: req.body.city,
+    var title = req.body.title;
+    var tags = req.body.tags.split(',');
+    var artist = req.body.artist;
+    var soundcloudUrl = req.body.soundcloudUrl;
+    var description = req.body.description;
+    var isfree = req.body.isfree ? true : false;
+    var minPrice = req.body.minPrice;
+    var maxPrice = req.body.maxPrice;
+    var buyUrl = req.body.buyUrl;
+    var dateEvent = req.body.dateEvent;
+    var startTime = req.body.startTime;
+    var endTime = req.body.endTime;
+    var address = req.body.adress;
+    var zip = req.body.zip;
+    var city = req.body.city;
+
+
+
+
+   var setObj = {
+
+    title: title,
+      tags: tags,
+      lineup:{
+        artist: artist,
+        soundcloudUrl: soundcloudUrl
+      },
+      description: description,
+      isfree: isfree,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      buyUrl: buyUrl,
+      dateEvent: dateEvent,
+      startTime: startTime,
+      endTime: endTime,
+      address: address,
+      zip: zip,
+      city: city
 
    }
 
-   console.log(setObj);
+   //console.log(setObj);
 
- 
     // now, update that set
     // mongoose method findByIdAndUpdate, see http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate  
     Set.findByIdAndUpdate(requestedId, setObj, function(err,data){
+
+      console.log('inside the update');
+
       // if err saving, respond back with error
       if (err){
+        console.log('its an error');
         var error = {status:'ERROR', message: 'Error updating set'};
         return res.json(error);
+      } else {
+
+          console.log('sucess');
+          res.render('templates/temp_event.html', {
+          status: 'OK',
+          layout:'layout', 
+          set: data      
+        })
+
+        console.log('updated the set!');
+        
       }
 
-      //console.log('updated the set!');
-      //console.log(data);
+      // res.render('templates/temp_event.html', jsonData);
 
-      // now return the json data of the new person
-      var jsonData = {
-        status: 'OK',
-        set: data
-      }
+      // //console.log(set.id);
 
-      //return res.json(jsonData);
-
-      return res.redirect('/upcoming');
+      // res.redirect ("/api/get/" + set.id); 
 
     })
 
@@ -429,13 +472,7 @@ router.post('/api/edit/:id', function(req, res){
 
 
 
-
-
-
-
 /** ____________________________________________________________________________
-
-
  * GET '/api/delete/:id'
  * Receives a GET request specifying the set to delete
  * @param  {String} req.param('id'). The setId
