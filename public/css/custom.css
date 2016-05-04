@@ -8,7 +8,6 @@ body{
     background: linear-gradient(to top, #E4523B, #E4345C); /* Standard syntax (must be last) */
 	background-attachment:fixed;
 
-
 }
 
 /*.backgroundSpecial{
@@ -30,8 +29,13 @@ body{
 #iconBig{
 	padding-left: 240px;
 	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
+#yas{
+		padding-top: 25px;
+
+}
 
 #preview{
 	margin-top:180px;
@@ -55,7 +59,10 @@ body{
     padding-top: 50px;
 }
 
-
+#holdon{
+	color: #ffffff;
+    text-align: center;
+}
 
 .bgheader{
 	background: url(/img/site/background_new1.png) no-repeat; 
@@ -300,6 +307,22 @@ text-align: center;
 	padding-left: 150px;
 	padding-right: 150px;
 	/*padding-top: 150px;*/
+}
+
+
+#holdon-container{
+
+	position: relative;
+	top: 0px;
+	height: auto;
+	margin: 0 auto;
+	padding-top: 150px;
+
+	padding-left: 150px;
+	padding-right: 150px;
+	/*padding-top: 150px;*/
+
+
 }
 
 /* 2.1) Feed */

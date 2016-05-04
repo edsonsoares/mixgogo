@@ -7,7 +7,7 @@ var moment = require('moment');
 
 // our db models
 var Set = require("../models/model.js");
-var Today = require("../models/dates.js");
+var Email = require("../models/emails.js");
 
 
 // S3 File dependencies
@@ -29,37 +29,107 @@ var multipartMiddleware = multipart();
 
 
 
-router.get('/', function(req, res) {
+// * ____________________________________________________________________________
+// * HOLD ON message
+// * When web site is not active
+
+router.get('/', multipartMiddleware, function(req, res) {
+
+  res.render('templates/temp_holdon.html',{
+    layout: 'noplayer-layout',
+    status: 'OK',
+    pageTitle: 'Mixgogo prototype',
+  })
+
+});
 
 
-  console.log(moment().startOf('day').toDate());
 
-  Set.find( 
-    {
-      'dateEvent':
-        {
 
-          $gte: moment().startOf('day').toDate()
+router.post('/testers', function(req, res) {
 
-        }
+  var email = req.body.email;
 
-    }).sort('dateEvent').limit(6).exec(function(err, data){
-          // if err or no sets found, respond with error 
-        if(err || data == null){
-          var error = {status:'ERROR', message: 'Could not find sets'};
-          return res.json(error);
-        }else{
-          console.log(data),
-          res.render('templates/temp_subscribe.html',{
+  var emailObj ={
+
+    email: email
+
+  }
+
+  var tester = new Email(emailObj);
+
+  // now, save that set instance to the database
+  // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
+  tester.save(function(err,data){
+    // if err saving, respond back with error
+    if (err){
+      console.log(err);
+      var error = {status:'ERROR', message: 'Error saving email'};
+      return res.json(error);
+    } else {
+        console.log('saved a new email!');
+        console.log(data);
+        res.render('templates/temp_thankyou.html',{
           layout: 'noplayer-layout',
           status: 'OK',
-          pageTitle: 'Mixgogo',
-          sets: data
-          }
-        );
-      }
+         })
+
+        // res.redirect ("/thankyou"); 
+
+    }
+
   })
+
 });
+
+
+
+// router.get('/thankyou', multipartMiddleware, function(req, res) {
+
+//   res.render('templates/temp_thankyou.html',{
+//     layout: 'noplayer-layout',
+//     status: 'OK',
+//     pageTitle: 'Mixgogo prototype',
+//   })
+
+// });
+
+
+
+
+
+
+// router.get('/', function(req, res) {
+
+
+//   console.log(moment().startOf('day').toDate());
+
+//   Set.find( 
+//     {
+//       'dateEvent':
+//         {
+
+//           $gte: moment().startOf('day').toDate()
+
+//         }
+
+//     }).sort('dateEvent').limit(6).exec(function(err, data){
+//           // if err or no sets found, respond with error 
+//         if(err || data == null){
+//           var error = {status:'ERROR', message: 'Could not find sets'};
+//           return res.json(error);
+//         }else{
+//           console.log(data),
+//           res.render('templates/temp_subscribe.html',{
+//           layout: 'noplayer-layout',
+//           status: 'OK',
+//           pageTitle: 'Mixgogo',
+//           sets: data
+//           }
+//         );
+//       }
+//   })
+// });
 
 
 
