@@ -71,6 +71,10 @@ function pullData(){
 
 
 
+
+
+
+
 //create an category/object of a date
 var aDay = {}
 
@@ -83,11 +87,20 @@ function renderDateTitle(currentSet){
 	var dateTitleToAdd = document.createElement('div');
 
 		var html = 
+
 				'<div class="col-md-3">'+
-					'<div class="thumbnail center-block"><h1 class="date-title">'+ dateTitle + '</h1></div>' +
+
+					'<div class="thumbnail center-block">'+
+
+						'<h1 class="date-title">'+ dateTitle + '</h1>'+
+
+					'</div>' +
+				
 				'</div>';
 
+
 	$(dateTitleToAdd).html(html)
+
 
 	//If there is no Date Title for one specific day, create it
 	if (!aDay[dateTitle]){
@@ -99,6 +112,7 @@ function renderDateTitle(currentSet){
 		aDay[dateTitle].thumbnails = [];
 		//Atribute this object to a div
 		aDay[dateTitle].aDayContainer = document.createElement('div');
+		aDay[dateTitle].aDayContainer.setAttribute("class", "row dayDivider");
 
 		$('#sets-container').append(aDay[dateTitle].aDayContainer);
 
@@ -121,9 +135,6 @@ function renderDateTitle(currentSet){
 
 
 
-
-
-
 //RENDER EVENTS //
 function renderEvents(currentSet, dateTitle){
 
@@ -133,11 +144,28 @@ function renderEvents(currentSet, dateTitle){
 
 				var html = 
 				'<div class="col-md-3">'+
-					'<div id="artcover" class="thumbnail"><img src="'+currentSet.artcover+'">'+				
-					'<input type="image" src="/img/site/event_play.png" class="thumbplay" id="bigplay'+currentSet.index+'" alt="Play">'+
-			        '<p><div class="text-uppercase"><a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a></div></p>' +
-			        '<div class="track-thumb"><h2><small>' + currentSet.lineup.artist+'</small></h2></div>'+
-				'</div>';
+
+					'<div id="artcover" class="thumbnail">'+
+
+						'<img src="'+currentSet.artcover+'">'+		
+
+						'<input type="image" src="/img/site/event_play.png" class="thumbplay" id="bigplay'+currentSet.index+'" alt="Play">'+
+			        	
+			        	'<div class="text-uppercase">'+
+			        	
+			        		'<a href="api/get/'+currentSet._id+'"><h2>' + currentSet.title + '</h2></a>'+
+			        	
+			        	'</div>' +
+			        	
+			        	'<div class="track-thumb">'+
+			        	
+			        		'<h2><small>' + currentSet.lineup.artist+'</small></h2>'+
+			        	
+			        	'</div>'+
+			       
+			        '</div>'+
+				
+				'</div>'
 				
 
 				$(thumbToAdd).html(html);
@@ -155,6 +183,10 @@ function renderEvents(currentSet, dateTitle){
   				$(thumbToAdd).attr('id', dateTitle + 'thumbnail' + aDay[dateTitle].thumbnails.length);
 			
 }
+
+
+
+
 
 
 

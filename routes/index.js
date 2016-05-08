@@ -208,8 +208,8 @@ router.get('/api/get/:id', function(req, res){
         status: 'OK',
         layout:'layout', 
         set: data      
-        }
-      );
+        });
+
     }  
   })
 
@@ -571,5 +571,70 @@ router.get('/api/delete/:id', function(req, res){
   })
 
 })
+
+
+
+
+
+
+
+
+/** ____________________________________________________________________________
+ ____________________________________________________________________________
+ _____________________________  MIXGOGO 2_______________________________________
+ ____________________________________________________________________________
+ __________________________a cleaner code _______________________________________
+  ____________________________________________________________________________
+ */
+
+
+
+
+
+
+// router.get('/upcoming2', function(req, res){
+
+  
+//   // console.log(moment().startOf('day').toDate());
+//   // mongoose method to find sets from events happening later than today, 
+//   //see http://mongoosejs.com/docs/api.html#model_Model.find
+//   Set.find( 
+//     {
+//       'dateEvent':
+//         {
+//           $gte: moment().startOf('day').subtract(1, 'days').toDate()
+//         }
+
+//     }).sort('dateEvent').exec(function(err, data){
+
+//           // if err or no sets found, respond with error 
+//         if(err || data == null){
+//           var error = {status:'ERROR', message: 'Could not find sets'};
+//           return res.json(error);
+//         }else{
+//           //console.log(data);
+//           res.render('templates/temp_upcoming2.html', {
+//           status: 'OK',
+//           layout:'layout', 
+//           sets: data      
+//           })
+          
+//         }
+
+//     })
+
+// });
+
+
+
+
+
+// /** ____________________________________________________________________________
+
+
+
+
+
+
 
 module.exports = router;

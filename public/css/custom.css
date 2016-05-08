@@ -181,6 +181,14 @@ body{
 	box-shadow: none;
 }
 
+
+
+
+.dayDivider{
+	margin-bottom: 40px;
+}
+
+
 .navbar-custom  {
 	min-height: 150px;
 	background: none;
