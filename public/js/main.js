@@ -8,6 +8,11 @@ var songs = [];
 function init() {
 	pullData();
 	soundcloudSDK();
+
+	//Tooltip for buttons
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
 }
 
 
@@ -88,7 +93,7 @@ function renderDateTitle(currentSet){
 
 		var html = 
 
-				'<div class="col-md-3">'+
+				'<div class="col-lg-3 col-md-4 col-sm-6 col-xm-12">'+
 
 					'<div class="thumbnail center-block">'+
 
@@ -143,7 +148,7 @@ function renderEvents(currentSet, dateTitle){
 	var thumbToAdd = document.createElement('div');
 
 				var html = 
-				'<div class="col-md-3">'+
+				'<div class="col-lg-3 col-md-4 col-sm-6 col-xm-12">'+
 
 					'<div id="artcover" class="thumbnail">'+
 
@@ -294,7 +299,6 @@ function soundcloudSDK(){
 
 
 //Change visibility of player
-
 $(".thumbplay").on("click", function(){
 $('#player').show();
 
@@ -344,7 +348,9 @@ function loadMixgogoPlayer(currentSet){
 		});
 
 
-
+		//Change play to Pause button
+		$('#play-pause').hide();
+        $('#pause-play').show();
 
 	
 		empty = false;
@@ -370,13 +376,18 @@ function loadMixgogoPlayer(currentSet){
 		  	$('#soundcloud-info').empty().prepend('<p>Source: &nbsp'+track_title+', by '+track_author+'</p>');
 		});			
 
-
+		//Change play to Pause button
+		$('#play-pause').hide();
+        $('#pause-play').show();
 
 	}
 
 	playNow(currentSet);
-	playNext()
+	playNext();
 	console.log("THIS SHOULD BE PLAYING--->" + currentSet);
+
+
+
 	
 }
 
@@ -390,19 +401,13 @@ function playNow (currentSet, url){
 
 	var track_url
 
-
 	//if passing just the url, means there is already something playing 
-	// and 
-
 	if(url){
 			track_url = url.soundcloudUrl
 		}else{
 			// We need to get the Track Id from soundcloud (do not mistake with Set ID on the set database) 
 			track_url = currentSet.lineup.soundcloudUrl;
 	}
-
-	console.log('Essa é a track_url');
-	console.log(track_url);
 
 
 	$.get('http://api.soundcloud.com/resolve.json?url='+track_url+'&client_id=95761a6a9b70583b71e0f8436edc8db3', function (result) {
@@ -411,8 +416,6 @@ function playNow (currentSet, url){
 		  	var track_id = result.id;
 
 			SC.stream('/tracks/'+track_id, function(sound){
-
-				// currentPlay.currentSong = {};
 				// Save this sound element in a object or somewhere in the page. If the element exists, 
 				//stop it first, delete it, attach the coming element to the object and play the new one
 				    if (window.currentSong){
@@ -422,11 +425,31 @@ function playNow (currentSet, url){
 				    window.currentSong = sound;
 					window.currentSong.play();
 					console.log("Track playing-->" + track_id);
+
+
+					//Toggle play pause
+					$('#pause-play').click(function(e) {
+			            e.preventDefault();
+			            window.currentSong.pause();
+			            $('#play-pause').show();
+        				$('#pause-play').hide();
+			        });
+
+			        $('#play-pause').click(function(e) {
+			            e.preventDefault();
+			            window.currentSong.play();
+			            $('#play-pause').hide();
+        				$('#pause-play').show();
+			        });
+
+
 			});
 		});
 
 
 }
+
+
 
 
 
@@ -441,8 +464,7 @@ function playNext(){
 	console.log('playnext songs', songs, songIndex)
 
 
-	$("#next-event").click(function(){
-			
+	$("#next-event").click(function(){	
 		console.log('index of what is playing is');
 		// console.log(currentPlay.playIndex);
 		playNow(null, songs[songIndex]);
@@ -450,7 +472,6 @@ function playNext(){
 	});
 
 }
-
 
 
 

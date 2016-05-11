@@ -184,7 +184,7 @@ body{
 
 
 
-.dayDivider{
+.{
 	margin-bottom: 40px;
 }
 
@@ -229,27 +229,13 @@ body{
 .scrollit {
 }
 
-/*
 
-.helper{	
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+
+
+
+.dayDivider{
+	margin-bottom: 40px;
 }
-
-
-#navbar > ul {
-display: table-row;
-}
- 
-#navbar > ul > li {
-display: table-cell;
-float: none;
-vertical-align: middle;
-text-align: center;
-
-}*/
-
 
 
 .home{

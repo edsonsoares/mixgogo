@@ -19,11 +19,53 @@
 
 			<div class="col-md-8">
 
-				{{title}}
-				{{lineup.artist}}
-				{{lineup.soundcloudUrl}}
 
-				<a href="../edit/{{id}}" class="btn btn-default btn-lg btn-block" style="visibility: visible">Edit</a>
+				<div class="row">
+
+					<div class="col-md-6">
+
+						<h1>{{title}}</h1>
+
+						<h2>{{lineup.artist}}</h2>
+
+						<h2 ><small>{{description}}</small></h2>
+
+					</div>
+
+					<div class="col-md-6">
+
+						<div class="row">
+
+							{{dateEvent}}
+      						{{startTime}}
+
+						</div>  <!-- When-->
+
+
+
+						<div class="row">
+
+							{{address}}
+					        {{city}}
+											
+						</div>  <!-- Where-->
+
+
+						<div class="row">
+
+							<h2><small>Price range: {{minPrice}} -  {{maxPrice}}</small></h2>
+
+							<div class="buttonTicket">
+								<a href="{{buyUrl}}"><input class="btn  btn-primary btn-lg " type="button" value="Tickets"></a>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<a href="../edit/{{id}}" class="btn btn-default btn-lg btn-block" style="visibility: hidden">Edit</a>
 
 			</div>
 

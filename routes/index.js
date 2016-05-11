@@ -33,54 +33,54 @@ var multipartMiddleware = multipart();
 // * HOLD ON message
 // * When web site is not active
 
-router.get('/', multipartMiddleware, function(req, res) {
+// router.get('/', multipartMiddleware, function(req, res) {
 
-  res.render('templates/temp_holdon.html',{
-    layout: 'noplayer-layout',
-    status: 'OK',
-    pageTitle: 'Mixgogo prototype',
-  })
+//   res.render('templates/temp_holdon.html',{
+//     layout: 'noplayer-layout',
+//     status: 'OK',
+//     pageTitle: 'Mixgogo prototype',
+//   })
 
-});
-
-
+// });
 
 
-router.post('/testers', function(req, res) {
 
-  var email = req.body.email;
 
-  var emailObj ={
+// router.post('/testers', function(req, res) {
 
-    email: email
+//   var email = req.body.email;
 
-  }
+//   var emailObj ={
 
-  var tester = new Email(emailObj);
+//     email: email
 
-  // now, save that set instance to the database
-  // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
-  tester.save(function(err,data){
-    // if err saving, respond back with error
-    if (err){
-      console.log(err);
-      var error = {status:'ERROR', message: 'Error saving email'};
-      return res.json(error);
-    } else {
-        console.log('saved a new email!');
-        console.log(data);
-        res.render('templates/temp_thankyou.html',{
-          layout: 'noplayer-layout',
-          status: 'OK',
-         })
+//   }
 
-        // res.redirect ("/thankyou"); 
+//   var tester = new Email(emailObj);
 
-    }
+//   // now, save that set instance to the database
+//   // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
+//   tester.save(function(err,data){
+//     // if err saving, respond back with error
+//     if (err){
+//       console.log(err);
+//       var error = {status:'ERROR', message: 'Error saving email'};
+//       return res.json(error);
+//     } else {
+//         console.log('saved a new email!');
+//         console.log(data);
+//         res.render('templates/temp_thankyou.html',{
+//           layout: 'noplayer-layout',
+//           status: 'OK',
+//          })
 
-  })
+//         // res.redirect ("/thankyou"); 
 
-});
+//     }
+
+//   })
+
+// });
 
 
 
@@ -142,9 +142,13 @@ router.get('/upcoming', function(req,res){
 
 
 
+
+
+
+
+
 // * ____________________________________________________________________________
-// * Receives a GET request to get all set details
-//  * @return {Object} JSON
+// * TEMP
 
 
 router.get('/api/get', function(req, res){
@@ -157,7 +161,7 @@ router.get('/api/get', function(req, res){
     {
       'dateEvent':
         {
-          $gte: moment().startOf('day').subtract(1, 'days').toDate()
+          $gte: moment().startOf('day').subtract(10, 'days').toDate()
         }
 
     }).sort('dateEvent').exec(function(err, data){
@@ -179,6 +183,52 @@ router.get('/api/get', function(req, res){
     })
 
 });
+
+
+
+
+
+
+
+
+
+// // * ____________________________________________________________________________
+// // * Receives a GET request to get all set details
+// //  * @return {Object} JSON
+
+
+// router.get('/api/get', function(req, res){
+
+  
+//   // console.log(moment().startOf('day').toDate());
+//   // mongoose method to find sets from events happening later than today, 
+//   //see http://mongoosejs.com/docs/api.html#model_Model.find
+//   Set.find( 
+//     {
+//       'dateEvent':
+//         {
+//           $gte: moment().startOf('day').subtract(1, 'days').toDate()
+//         }
+
+//     }).sort('dateEvent').exec(function(err, data){
+
+//           // if err or no sets found, respond with error 
+//         if(err || data == null){
+//           var error = {status:'ERROR', message: 'Could not find sets'};
+//           return res.json(error);
+//         }
+
+//         // otherwise, respond with the data 
+//         var jsonData = {
+//           status: 'OK',
+//           sets: data
+//         } 
+
+//         res.json(jsonData);
+//         // res.render('upcoming.html', jsonData);
+//     })
+
+// });
 
 
 
@@ -324,9 +374,6 @@ router.post('/api/create', multipartMiddleware, function(req, res){
         return;
       } else {
         //console.log("Successfully uploaded data to s3 bucket");
-
-
-
         // now that we have the image
         // we can add the s3 url our person object from above
         setObj['artcover'] = s3Path + cleanedFileName;
@@ -574,11 +621,6 @@ router.get('/api/delete/:id', function(req, res){
 
 
 
-
-
-
-
-
 /** ____________________________________________________________________________
  ____________________________________________________________________________
  _____________________________  MIXGOGO 2_______________________________________
@@ -586,8 +628,6 @@ router.get('/api/delete/:id', function(req, res){
  __________________________a cleaner code _______________________________________
   ____________________________________________________________________________
  */
-
-
 
 
 
@@ -618,7 +658,7 @@ router.get('/api/delete/:id', function(req, res){
 //           layout:'layout', 
 //           sets: data      
 //           })
-          
+
 //         }
 
 //     })
