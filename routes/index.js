@@ -99,37 +99,37 @@ var multipartMiddleware = multipart();
 
 
 
-// router.get('/', function(req, res) {
+router.get('/', function(req, res) {
 
 
-//   console.log(moment().startOf('day').toDate());
+  console.log(moment().startOf('day').toDate());
 
-//   Set.find( 
-//     {
-//       'dateEvent':
-//         {
+  Set.find( 
+    {
+      'dateEvent':
+        {
 
-//           $gte: moment().startOf('day').toDate()
+          $gte: moment().startOf('day').toDate()
 
-//         }
+        }
 
-//     }).sort('dateEvent').limit(6).exec(function(err, data){
-//           // if err or no sets found, respond with error 
-//         if(err || data == null){
-//           var error = {status:'ERROR', message: 'Could not find sets'};
-//           return res.json(error);
-//         }else{
-//           console.log(data),
-//           res.render('templates/temp_subscribe.html',{
-//           layout: 'noplayer-layout',
-//           status: 'OK',
-//           pageTitle: 'Mixgogo',
-//           sets: data
-//           }
-//         );
-//       }
-//   })
-// });
+    }).sort('dateEvent').limit(6).exec(function(err, data){
+          // if err or no sets found, respond with error 
+        if(err || data == null){
+          var error = {status:'ERROR', message: 'Could not find sets'};
+          return res.json(error);
+        }else{
+          console.log(data),
+          res.render('templates/temp_subscribe.html',{
+          layout: 'noplayer-layout',
+          status: 'OK',
+          pageTitle: 'Mixgogo',
+          sets: data
+          }
+        );
+      }
+  })
+});
 
 
 
@@ -138,10 +138,6 @@ var multipartMiddleware = multipart();
 router.get('/upcoming', function(req,res){
   res.render('templates/temp_upcoming.html', {layout:'layout'})
 })  
-
-
-
-
 
 
 
