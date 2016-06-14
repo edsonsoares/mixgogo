@@ -65,14 +65,12 @@ body{
 }
 
 .bgheader{
-	background: url(/img/site/background_new1.png) no-repeat; 
+	background: url(/img/site/header_mixgogo.png) no-repeat; 
 	background-position: center center;
 	background-size:cover;
 	height:auto;
 	/*z-index: -2;*/
 }
-
-
 
 
 .bgpromoter{
@@ -110,6 +108,7 @@ body{
 	color: #33a6cc;
 	border-color: #33a6cc;
 }
+
 .btn-primary.outline:active, .btn-primary.outline.active {
 	border-color: #007299;
 	color: #007299;
@@ -409,7 +408,9 @@ body{
     margin-bottom: 30px;
     background-color: #fff;
     border-radius: 4px;
-    padding: 4px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
 }
 
 
