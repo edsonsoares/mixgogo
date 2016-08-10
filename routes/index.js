@@ -33,103 +33,103 @@ var multipartMiddleware = multipart();
 // * HOLD ON message
 // * When web site is not active
 
-router.get('/', multipartMiddleware, function(req, res) {
+// router.get('/', multipartMiddleware, function(req, res) {
 
-  res.render('templates/temp_holdon.html',{
-    layout: 'noplayer-layout',
-    status: 'OK',
-    pageTitle: 'Mixgogo prototype',
-  })
+//   res.render('templates/temp_holdon.html',{
+//     layout: 'noplayer-layout',
+//     status: 'OK',
+//     pageTitle: 'Mixgogo prototype',
+//   })
 
-});
-
-
-
-
-router.post('/testers', function(req, res) {
-
-  var email = req.body.email;
-
-  var emailObj ={
-
-    email: email
-
-  }
-
-  var tester = new Email(emailObj);
-
-  // now, save that set instance to the database
-  // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
-  tester.save(function(err,data){
-    // if err saving, respond back with error
-    if (err){
-      console.log(err);
-      var error = {status:'ERROR', message: 'Error saving email'};
-      return res.json(error);
-    } else {
-        console.log('saved a new email!');
-        console.log(data);
-        res.render('templates/temp_thankyou.html',{
-          layout: 'noplayer-layout',
-          status: 'OK',
-         })
-
-        // res.redirect ("/thankyou"); 
-
-    }
-
-  })
-
-});
-
-
-
-router.get('/thankyou', multipartMiddleware, function(req, res) {
-
-  res.render('templates/temp_thankyou.html',{
-    layout: 'noplayer-layout',
-    status: 'OK',
-    pageTitle: 'Mixgogo prototype',
-  })
-
-});
+// });
 
 
 
 
+// router.post('/testers', function(req, res) {
 
+//   var email = req.body.email;
 
-// router.get('/', function(req, res) {
+//   var emailObj ={
 
+//     email: email
 
-//   console.log(moment().startOf('day').toDate());
+//   }
 
-//   Set.find( 
-//     {
-//       'dateEvent':
-//         {
+//   var tester = new Email(emailObj);
 
-//           $gte: moment().startOf('day').toDate()
-
-//         }
-
-//     }).sort('dateEvent').limit(6).exec(function(err, data){
-//           // if err or no sets found, respond with error 
-//         if(err || data == null){
-//           var error = {status:'ERROR', message: 'Could not find sets'};
-//           return res.json(error);
-//         }else{
-//           console.log(data),
-//           res.render('templates/temp_subscribe.html',{
+//   // now, save that set instance to the database
+//   // mongoose method, see http://mongoosejs.com/docs/api.html#model_Model-save    
+//   tester.save(function(err,data){
+//     // if err saving, respond back with error
+//     if (err){
+//       console.log(err);
+//       var error = {status:'ERROR', message: 'Error saving email'};
+//       return res.json(error);
+//     } else {
+//         console.log('saved a new email!');
+//         console.log(data);
+//         res.render('templates/temp_thankyou.html',{
 //           layout: 'noplayer-layout',
 //           status: 'OK',
-//           pageTitle: 'Mixgogo',
-//           sets: data
-//           }
-//         );
-//       }
+//          })
+
+//         // res.redirect ("/thankyou"); 
+
+//     }
+
 //   })
+
 // });
+
+
+
+// router.get('/thankyou', multipartMiddleware, function(req, res) {
+
+//   res.render('templates/temp_thankyou.html',{
+//     layout: 'noplayer-layout',
+//     status: 'OK',
+//     pageTitle: 'Mixgogo prototype',
+//   })
+
+// });
+
+
+
+
+
+
+router.get('/', function(req, res) {
+
+
+  console.log(moment().startOf('day').toDate());
+
+  Set.find( 
+    {
+      'dateEvent':
+        {
+
+          $gte: moment().startOf('day').toDate()
+
+        }
+
+    }).sort('dateEvent').limit(6).exec(function(err, data){
+          // if err or no sets found, respond with error 
+        if(err || data == null){
+          var error = {status:'ERROR', message: 'Could not find sets'};
+          return res.json(error);
+        }else{
+          console.log(data),
+          res.render('templates/temp_subscribe.html',{
+          layout: 'noplayer-layout',
+          status: 'OK',
+          pageTitle: 'Mixgogo',
+          sets: data
+          }
+        );
+      }
+  })
+});
 
 
 
@@ -157,7 +157,7 @@ router.get('/api/get', function(req, res){
     {
       'dateEvent':
         {
-          $gte: moment().startOf('day').subtract(42, 'days').toDate()
+          $gte: moment().startOf('day').subtract(250, 'days').toDate()
         }
 
     }).sort('dateEvent').exec(function(err, data){
@@ -193,38 +193,38 @@ router.get('/api/get', function(req, res){
 // //  * @return {Object} JSON
 
 
-// router.get('/api/get', function(req, res){
+router.get('/api/get', function(req, res){
 
   
-//   // console.log(moment().startOf('day').toDate());
-//   // mongoose method to find sets from events happening later than today, 
-//   //see http://mongoosejs.com/docs/api.html#model_Model.find
-//   Set.find( 
-//     {
-//       'dateEvent':
-//         {
-//           $gte: moment().startOf('day').subtract(1, 'days').toDate()
-//         }
+  // console.log(moment().startOf('day').toDate());
+  // mongoose method to find sets from events happening later than today, 
+  //see http://mongoosejs.com/docs/api.html#model_Model.find
+  Set.find( 
+    {
+      'dateEvent':
+        {
+          $gte: moment().startOf('day').subtract(1, 'days').toDate()
+        }
 
-//     }).sort('dateEvent').exec(function(err, data){
+    }).sort('dateEvent').exec(function(err, data){
 
-//           // if err or no sets found, respond with error 
-//         if(err || data == null){
-//           var error = {status:'ERROR', message: 'Could not find sets'};
-//           return res.json(error);
-//         }
+          // if err or no sets found, respond with error 
+        if(err || data == null){
+          var error = {status:'ERROR', message: 'Could not find sets'};
+          return res.json(error);
+        }
 
-//         // otherwise, respond with the data 
-//         var jsonData = {
-//           status: 'OK',
-//           sets: data
-//         } 
+        // otherwise, respond with the data 
+        var jsonData = {
+          status: 'OK',
+          sets: data
+        } 
 
-//         res.json(jsonData);
-//         // res.render('upcoming.html', jsonData);
-//     })
+        res.json(jsonData);
+        // res.render('upcoming.html', jsonData);
+    })
 
-// });
+});
 
 
 
